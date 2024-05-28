@@ -5,12 +5,15 @@ import {
   TouchableOpacity,
   View,
   StyleSheet,
+  StatusBar,
 } from "react-native";
 import backgroundImage from "../assets/images/icarus.png";
+import { Link } from "expo-router";
 
 export default function Index() {
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#000" />
       <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
         <View style={styles.overlay}>
           <Text style={styles.title}>Icarus: Protein Tracker</Text>
@@ -19,18 +22,20 @@ export default function Index() {
             track of your daily protein intake easily and effectively.
           </Text>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
+            <Link
               style={styles.button}
               onPress={() => console.log("Navigate to Login")}
+              href="/login"
             >
               <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </Link>
+            <Link
               style={styles.button}
               onPress={() => console.log("Navigate to Signup")}
+              href="/signup"
             >
               <Text style={styles.buttonText}>Signup</Text>
-            </TouchableOpacity>
+            </Link>
           </View>
         </View>
       </ImageBackground>
@@ -87,10 +92,11 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   button: {
-    backgroundColor: "#007AFF",
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
+    borderColor: "white",
+    borderWidth: 2,
   },
   buttonText: {
     color: "white",
