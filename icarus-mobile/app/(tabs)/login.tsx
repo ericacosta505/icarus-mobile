@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput, Button, Alert, ImageBackground, StatusBar, TouchableOpacity } from "react-native";
 import { Link, useRouter } from "expo-router";
 import backgroundImage from "../../assets/images/icarus.png";
+import * as SecureStore from 'expo-secure-store';
 
 interface Credentials {
   email: string;
@@ -10,7 +11,7 @@ interface Credentials {
 
 export default function Login() {
   const [inputValue, setInputValue] = useState<Credentials>({ email: "", password: "" });
-  const router = useRouter();
+  const router = useRouter()
 
   const handleOnChange = (name: keyof Credentials, value: string) => {
     setInputValue((prevState) => ({ ...prevState, [name]: value }));
@@ -23,19 +24,21 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(credentials),
-        credentials: "include",
+        body: JSON.stringify(credentials)
       });
 
       const data = await response.json();
 
       if (data.success) {
+        const token = String(data.token)
+        await SecureStore.setItemAsync('token', token);
         setTimeout(() => router.push("home"), 1000);
       } else {
-        Alert.alert("Login Failed");
+        Alert.alert("Login Failed", data.message || "Please check your credentials");
       }
     } catch (error) {
-      Alert.alert("Something went wrong");
+      console.error("Login error:", error);
+      Alert.alert("Something went wrong", "Unable to connect to the server");
     }
   };
 
@@ -78,9 +81,6 @@ export default function Login() {
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
             </View>
-            <Link href="/signup" style={styles.signupLink}>
-              <Text style={styles.signupText}>Don't have an account? Signup</Text>
-            </Link>
           </View>
         </View>
       </ImageBackground>

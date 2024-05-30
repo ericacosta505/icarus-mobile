@@ -11,7 +11,7 @@ interface SignupCredentials {
 
 export default function Signup() {
   const [inputValue, setInputValue] = useState<SignupCredentials>({ email: "", password: "", username: "" });
-  const router = useRouter();
+  const router = useRouter()
 
   const handleOnChange = (name: keyof SignupCredentials, value: string) => {
     setInputValue((prevState) => ({ ...prevState, [name]: value }));
@@ -24,19 +24,20 @@ export default function Signup() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(credentials),
-        credentials: "include",
+        body: JSON.stringify(credentials)
       });
 
       const data = await response.json();
 
       if (data.success) {
+        Alert.alert("Signup Successful", "Please login to continue.");
         setTimeout(() => router.push("login"), 1000);
       } else {
-        Alert.alert("Signup Failed");
+        Alert.alert("Signup Failed", data.message || "Please try again.");
       }
     } catch (error) {
-      Alert.alert("Something went wrong");
+      console.error("Signup error:", error);
+      Alert.alert("Something went wrong", "Unable to connect to the server");
     }
   };
 
@@ -44,6 +45,7 @@ export default function Signup() {
     await signup(inputValue);
     setInputValue({ email: "", password: "", username: "" });
   };
+
 
   return (
     <View style={styles.container}>
