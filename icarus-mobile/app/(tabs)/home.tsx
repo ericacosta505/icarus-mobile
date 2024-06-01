@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, Switch } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { useRouter } from 'expo-router';
+import Header from '@/components/Header';
 
 export default function Home(){
   const [username, setUsername] = useState<string>('');
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const router = useRouter()
 
   useEffect(() => {
@@ -38,10 +40,19 @@ export default function Home(){
     verifyToken();
   }, []);
 
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const logout = async () => {
+    await SecureStore.deleteItemAsync('token');
+    router.push("login");
+  };
+
 
   return (
     <View style={styles.container}>
-      <Text>Welcome {username}</Text>
+      <Header toggleDropdown={toggleDropdown} showDropdown={showDropdown} logout={logout} username={username}/>
     </View>
   );
 };
