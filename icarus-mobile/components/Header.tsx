@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={toggleDropdown} style={styles.menu}>
-        <Text>☰</Text>
+        <Text style={styles.hamburger}>☰</Text>
       </TouchableOpacity>
       {showDropdown && (
         <View style={styles.sidebar}>
@@ -37,12 +37,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     padding: 10,
-    backgroundColor: "#f8f8f8",
+    backgroundColor: "#333",
     width: "100%",
-    // marginTop: 35
   },
   menu: {
     padding: 10,
+  },
+  hamburger: {
+    color: "#fff",
   },
   sidebar: {
     position: "absolute",
@@ -65,6 +67,7 @@ const styles = StyleSheet.create({
   },
   username: {
     marginRight: 10,
+    color: "#fff",
   },
 });
 
