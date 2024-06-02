@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
 import Header from "@/components/Header";
+import PastEntries from "@/components/PastEntries";
 
 export default function PreviousEntires() {
   const router = useRouter();
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
+  const [pastEntries, setPastEntries] = useState([]);
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -41,6 +43,32 @@ export default function PreviousEntires() {
     verifyToken();
   }, [router]);
 
+  const fetchPastEntries = async () => {
+    const token = await SecureStore.getItemAsync("token");
+    try {
+      const response = await fetch(
+        "http://localhost:4000/user/getAllPastEntries",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+      if (data && data.pastEntries) {
+        setPastEntries(data.pastEntries);
+      }
+    } catch (error) {
+      console.error("There was an error loading past entries:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPastEntries();
+  }, []);
+
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -68,7 +96,7 @@ export default function PreviousEntires() {
         navigateToHome={navigateToHome}
         username={username}
       />
-      <Text>Past entries page</Text>
+      <PastEntries pastEntries={pastEntries} />
     </SafeAreaView>
   );
 }

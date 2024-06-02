@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import { Calendar } from "react-native-calendars";
 
 interface Entry {
@@ -44,94 +44,114 @@ const PastEntries: React.FC<PastEntriesProps> = ({ pastEntries }) => {
 
   useEffect(() => {
     const totalProtein = filteredEntries.reduce(
-      (sum, entry) => sum + entry.proteinAmount,
+      (sum, entry) => sum + Number(entry.proteinAmount),
       0
     );
     setProteinSum(totalProtein);
   }, [filteredEntries]);
 
-  const calendarTheme = {
-    backgroundColor: "#333",
-    calendarBackground: "#333",
-    textSectionTitleColor: "#b6c1cd",
-    selectedDayBackgroundColor: "#00adf5",
-    selectedDayTextColor: "#ffffff",
-    todayTextColor: "#00adf5",
-    dayTextColor: "#2d4150",
-    textDisabledColor: "#d9e1e8",
-    dotColor: "#00adf5",
-    selectedDotColor: "#ffffff",
-    arrowColor: "orange",
-    monthTextColor: "blue",
-    textDayFontFamily: "monospace",
-    textMonthFontFamily: "monospace",
-    textDayHeaderFontFamily: "monospace",
-    textDayFontWeight: "300",
-    textMonthFontWeight: "bold",
-    textDayHeaderFontWeight: "300",
-    textDayFontSize: 16,
-    textMonthFontSize: 16,
-    textDayHeaderFontSize: 16,
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Past Entries</Text>
-      <View style={styles.calendarAndEntries}>
-        <Calendar
-          onDayPress={(day) => setSelectedDate(day.dateString)}
-          current={selectedDate}
-          markingType={"custom"}
-        />
-        <View style={styles.entriesList}>
-          {filteredEntries.length > 0 ? (
-            filteredEntries.map((entry, index) => (
-              <Text key={index} style={styles.entryItem}>
-                - {entry.mealName}: {entry.proteinAmount}g
+      <Calendar
+        onDayPress={(day) => setSelectedDate(day.dateString)}
+        current={selectedDate}
+        markingType={"custom"}
+        theme={{
+          backgroundColor: "#454545",
+          calendarBackground: "#454545",
+          textSectionTitleColor: "#b6c1cd",
+          textSectionTitleDisabledColor: "#d9e1e8",
+          selectedDayBackgroundColor: "#00adf5",
+          selectedDayTextColor: "#ffffff",
+          todayTextColor: "#00adf5",
+          dayTextColor: "#d9e1e8",
+          textDisabledColor: "#d9e1e8",
+          dotColor: "#00adf5",
+          selectedDotColor: "#ffffff",
+          arrowColor: "#ffffff",
+          monthTextColor: "#ffffff",
+          indicatorColor: "#ffffff",
+          textDayFontWeight: "300",
+          textMonthFontWeight: "bold",
+          textDayHeaderFontWeight: "300",
+          textDayFontSize: 16,
+          textMonthFontSize: 16,
+          textDayHeaderFontSize: 16,
+        }}
+      />
+      <View style={styles.listAndSum}>
+        <FlatList
+          data={filteredEntries}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.entryItem}>
+              <Text style={styles.entryContent}>
+                {item.mealName} - {item.proteinAmount}g
               </Text>
-            ))
-          ) : (
-            <Text>No entries on this date.</Text>
+            </View>
           )}
-        </View>
+          ListEmptyComponent={
+            <Text style={styles.noEntry}>No entries on this date.</Text>
+          }
+          style={styles.entriesList}
+        />
+        <Text style={styles.pastEntrySum}>{proteinSum}g</Text>
       </View>
-
-      <Text style={styles.pastEntrySum}>{proteinSum}g</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    flexDirection: "column",
-    padding: 10,
     backgroundColor: "#454545",
-    width: 410,
-    height: 100,
-    marginTop: 10,
+    padding: 10,
     borderRadius: 20,
+    width: 410,
+    height: 520,
+    marginTop: 10,
+    justifyContent: "center",
+    marginLeft: 10,
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
     color: "#fff",
+    fontWeight: "bold",
+    fontSize: 20,
+    marginBottom: 10,
   },
-  calendarAndEntries: {
-    display: "flex",
+  listAndSum: {
     flexDirection: "row",
+    alignItems: "center",
+    gap: 40,
   },
   entriesList: {
+    height: 100,
     marginTop: 10,
   },
   entryItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#333",
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 5,
+  },
+  entryContent: {
+    color: "#fff",
     fontSize: 16,
-    marginVertical: 5,
+  },
+  noEntry: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 40,
   },
   pastEntrySum: {
-    fontSize: 18,
+    marginTop: 10,
+    fontSize: 60,
     fontWeight: "bold",
     textAlign: "center",
+    color: "#fff",
   },
 });
 
