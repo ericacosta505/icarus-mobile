@@ -5,11 +5,13 @@ import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "@/components/Header";
 import ProteinGoal from "@/components/ProteinGoal";
+import ProteinConsumed from "@/components/ProteinConsumed";
 
 export default function Home() {
   const [username, setUsername] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [proteinGoal, setProteinGoal] = useState<string>("0");
+  const [proteinConsumed, setProteinConsumed] = useState<string>("0");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
 
@@ -75,6 +77,35 @@ export default function Home() {
     fetchProteinGoal();
   }, []);
 
+  const fetchSumTodaysEntries = async () => {
+    const token = await SecureStore.getItemAsync("token");
+    try {
+      const response = await fetch(
+        "http://localhost:4000/user/sumTodaysEntries",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.totalProteinToday !== undefined) {
+        setProteinConsumed(data.totalProteinToday);
+      } else {
+        setProteinConsumed("0");
+      }
+    } catch (error) {
+      console.error("Error fetching sum of today's entries:", error);
+      setProteinConsumed("0");
+    }
+  };
+
+  useEffect(() => {
+    fetchSumTodaysEntries();
+  }, []);
+
   const updateProteinGoal = (newGoal: string) => {
     setProteinGoal(newGoal);
   };
@@ -101,6 +132,10 @@ export default function Home() {
           proteinGoalValue={proteinGoal}
           isLoading={isLoading}
           onUpdate={updateProteinGoal}
+        />
+        <ProteinConsumed
+          proteinGoalValue={proteinGoal}
+          proteinConsumed={proteinConsumed}
         />
       </View>
     </SafeAreaView>
