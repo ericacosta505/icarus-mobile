@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import ProteinGoal from "@/components/ProteinGoal";
 import ProteinConsumed from "@/components/ProteinConsumed";
 import DateDisplay from "@/components/DateDisplay";
+import AddEntryForm from "@/components/AddEntryForm";
 
 export default function Home() {
   const [username, setUsername] = useState<string>("");
@@ -14,6 +15,9 @@ export default function Home() {
   const [proteinGoal, setProteinGoal] = useState<string>("0");
   const [proteinConsumed, setProteinConsumed] = useState<string>("0");
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isEntryLoading, setisEntryLoading] = useState<boolean>(true);
+  const [todaysEntries, setTodaysEntries] = useState([]);
+  const [pastEntries, setPastEntries] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -103,6 +107,62 @@ export default function Home() {
     }
   };
 
+  const fetchTodaysEntries = async () => {
+    const token = await SecureStore.getItemAsync("token");
+    try {
+      setisEntryLoading(true);
+      const response = await fetch(
+        "http://localhost:4000/user/getTodaysEntries",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.todaysEntries) {
+        setTodaysEntries(data.todaysEntries);
+        setisEntryLoading(false);
+      }
+    } catch (error) {
+      console.error("Error fetching today's entries:", error);
+      setisEntryLoading(false);
+    }
+  };
+
+  const fetchPastEntries = async () => {
+    const token = await SecureStore.getItemAsync("token");
+    try {
+      const response = await fetch(
+        "http://localhost:4000/user/getAllPastEntries",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+      if (data && data.pastEntries) {
+        setPastEntries(data.pastEntries);
+      }
+    } catch (error) {
+      console.error("There was an error loading past entries:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPastEntries();
+  }, []);
+
+  useEffect(() => {
+    fetchTodaysEntries();
+  }, []);
+
   useEffect(() => {
     fetchSumTodaysEntries();
   }, []);
@@ -137,10 +197,16 @@ export default function Home() {
           />
           <DateDisplay />
         </View>
-
         <ProteinConsumed
           proteinGoalValue={proteinGoal}
           proteinConsumed={proteinConsumed}
+        />
+        <AddEntryForm
+          onEntryAdded={() => {
+            fetchTodaysEntries();
+            fetchSumTodaysEntries();
+            fetchPastEntries();
+          }}
         />
       </View>
     </SafeAreaView>
