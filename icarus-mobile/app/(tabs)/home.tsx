@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "@/components/Header";
 import ProteinGoal from "@/components/ProteinGoal";
 import ProteinConsumed from "@/components/ProteinConsumed";
+import DateDisplay from "@/components/DateDisplay";
 
 export default function Home() {
   const [username, setUsername] = useState<string>("");
@@ -128,11 +129,15 @@ export default function Home() {
         username={username}
       />
       <View style={styles.content}>
-        <ProteinGoal
-          proteinGoalValue={proteinGoal}
-          isLoading={isLoading}
-          onUpdate={updateProteinGoal}
-        />
+        <View style={styles.doubleContainer}>
+          <ProteinGoal
+            proteinGoalValue={proteinGoal}
+            isLoading={isLoading}
+            onUpdate={updateProteinGoal}
+          />
+          <DateDisplay />
+        </View>
+
         <ProteinConsumed
           proteinGoalValue={proteinGoal}
           proteinConsumed={proteinConsumed}
@@ -151,5 +156,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  doubleContainer: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 10,
   },
 });

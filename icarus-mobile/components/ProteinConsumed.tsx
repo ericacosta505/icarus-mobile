@@ -28,16 +28,16 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
     {
       name: "Protein Consumed",
       protein: consumedValue,
-      color: "rgba(255, 99, 132, 0.6)",
-      legendFontColor: "#FFFFFF",
-      legendFontSize: 15,
+      color: "#fff",
+      legendFontColor: "#fff",
+      legendFontSize: 10,
     },
     {
       name: "Remaining Goal",
       protein: goalValue - consumedValue > 0 ? goalValue - consumedValue : 0,
-      color: "rgba(54, 162, 235, 0.6)",
+      color: "rgba(0, 0, 0, 1)",
       legendFontColor: "#FFFFFF",
-      legendFontSize: 15,
+      legendFontSize: 10,
     },
   ];
 
@@ -69,10 +69,11 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: 400,
+    width: 410,
     height: 200,
-    paddingRight: 20,
     borderRadius: 20,
+    marginTop: 10,
+    marginBottom: 10,
   },
 });
 
