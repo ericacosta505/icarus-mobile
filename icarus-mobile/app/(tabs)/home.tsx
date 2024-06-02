@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,6 +9,7 @@ import ProteinConsumed from "@/components/ProteinConsumed";
 import DateDisplay from "@/components/DateDisplay";
 import AddEntryForm from "@/components/AddEntryForm";
 import EntryList from "@/components/EntryList";
+import PastEntries from "@/components/PastEntries";
 
 export default function Home() {
   const [username, setUsername] = useState<string>("");

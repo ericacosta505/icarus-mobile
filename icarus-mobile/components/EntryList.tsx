@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
     width: 410,
-    height: 200,
+    height: 250,
     marginTop: 10,
     display: "flex",
     flexDirection: "column",
