@@ -4,10 +4,13 @@ import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "@/components/Header";
+import ProteinGoal from "@/components/ProteinGoal";
 
 export default function Home() {
   const [username, setUsername] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const [proteinGoal, setProteinGoal] = useState<string>("0");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -42,6 +45,40 @@ export default function Home() {
     verifyToken();
   }, [router]);
 
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchProteinGoal = async () => {
+      const token = await SecureStore.getItemAsync("token");
+      if (token) {
+        try {
+          const response = await fetch(
+            "http://localhost:4000/user/getProteinGoal",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          const data = await response.json();
+          if (data.proteinGoal) {
+            setProteinGoal(data.proteinGoal);
+          }
+          setIsLoading(false);
+        } catch (error) {
+          console.error("Error fetching protein goal:", error);
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchProteinGoal();
+  }, []);
+
+  const updateProteinGoal = (newGoal: string) => {
+    setProteinGoal(newGoal);
+  };
+
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -59,7 +96,13 @@ export default function Home() {
         logout={logout}
         username={username}
       />
-      <View style={styles.content}></View>
+      <View style={styles.content}>
+        <ProteinGoal
+          proteinGoalValue={proteinGoal}
+          isLoading={isLoading}
+          onUpdate={updateProteinGoal}
+        />
+      </View>
     </SafeAreaView>
   );
 }
