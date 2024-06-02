@@ -81,19 +81,19 @@ const ProteinGoal: React.FC<ProteinGoalProps> = ({
         {!isLoading &&
           (isEditing ? (
             <TouchableOpacity onPress={handleBackClick} style={styles.button}>
-              <Text>Back</Text>
+              <Text style={styles.buttonText}>Back</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity onPress={handleEditClick} style={styles.button}>
-              <Text>Edit</Text>
+              <Text style={styles.buttonText}>Edit</Text>
             </TouchableOpacity>
           ))}
       </View>
-      <View style={styles.proteinGoalAmount}>
+      <View style={styles.proteinGoalAmountContainer}>
         {isLoading ? (
           <Loader />
         ) : isEditing ? (
-          <>
+          <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
               value={proteinGoal}
@@ -102,12 +102,12 @@ const ProteinGoal: React.FC<ProteinGoalProps> = ({
               autoFocus
             />
             <TouchableOpacity onPress={handleUpdateClick} style={styles.button}>
-              <Text>Update</Text>
+              <Text style={styles.buttonText}>Update</Text>
             </TouchableOpacity>
-          </>
+          </View>
         ) : (
           <>
-            <Text>{proteinGoal} g</Text>
+            <Text style={styles.displayedAmount}>{proteinGoal} g</Text>
           </>
         )}
       </View>
@@ -118,7 +118,10 @@ const ProteinGoal: React.FC<ProteinGoalProps> = ({
 const styles = StyleSheet.create({
   proteinGoalContainer: {
     padding: 10,
-    backgroundColor: "#fff",
+    backgroundColor: "#454545",
+    height: 200,
+    width: 200,
+    borderRadius: 20,
   },
   header: {
     flexDirection: "row",
@@ -127,23 +130,43 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
+    color: "#fff",
+    fontWeight: "bold",
   },
-  proteinGoalAmount: {
+  proteinGoalAmountContainer: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 20,
   },
   input: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "#ccc",
     padding: 10,
     marginRight: 10,
     minWidth: 50,
+    color: "#fff",
+    borderRadius: 20,
   },
   button: {
     padding: 10,
     backgroundColor: "#eee",
     alignItems: "center",
+    borderRadius: 20,
+  },
+  buttonText: {
+    fontWeight: "bold",
+  },
+  displayedAmount: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 60,
   },
 });
 
