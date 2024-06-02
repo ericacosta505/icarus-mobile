@@ -26,16 +26,16 @@ const Header: React.FC<HeaderProps> = ({
       {showDropdown && (
         <View style={styles.sidebar}>
           <TouchableOpacity onPress={navigateToHome} style={styles.button}>
-            <Text>Home</Text>
+            <Text style={styles.buttonText}>Home</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={navigateToPreviousEntries}
             style={styles.button}
           >
-            <Text>Previous Entries</Text>
+            <Text style={styles.buttonText}>Previous Entries</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={logout} style={styles.button}>
-            <Text style={styles.logoutText}>LOGOUT</Text>
+            <Text style={[styles.buttonText, styles.logoutText]}>LOGOUT</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -59,13 +59,15 @@ const styles = StyleSheet.create({
   },
   hamburger: {
     color: "#fff",
+    fontSize: 24,
   },
   sidebar: {
     position: "absolute",
     top: 50,
     left: 10,
-    padding: 10,
-    backgroundColor: "#fff",
+    padding: 15,
+    backgroundColor: "#444",
+    borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
@@ -74,7 +76,12 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
   button: {
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
   },
   logoutText: {
     color: "#f00",
@@ -82,6 +89,7 @@ const styles = StyleSheet.create({
   username: {
     marginRight: 10,
     color: "#fff",
+    fontSize: 16,
   },
 });
 

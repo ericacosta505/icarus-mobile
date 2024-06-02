@@ -111,8 +111,9 @@ const styles = StyleSheet.create({
   },
   noEntries: {
     fontSize: 16,
-    color: "#ccc",
+    color: "#fff",
     textAlign: "center",
+    marginTop: 170,
   },
   entryItem: {
     flexDirection: "row",
