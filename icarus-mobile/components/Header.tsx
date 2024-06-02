@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React from "react";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 interface HeaderProps {
   toggleDropdown: () => void;
@@ -8,7 +8,12 @@ interface HeaderProps {
   username: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ toggleDropdown, showDropdown, logout, username }) => {
+const Header: React.FC<HeaderProps> = ({
+  toggleDropdown,
+  showDropdown,
+  logout,
+  username,
+}) => {
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={toggleDropdown} style={styles.menu}>
@@ -24,28 +29,28 @@ const Header: React.FC<HeaderProps> = ({ toggleDropdown, showDropdown, logout, u
       <Text style={styles.username}>{username}</Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 10,
-    backgroundColor: '#f8f8f8',
-    width: '100%',
-    marginTop: 35
+    backgroundColor: "#f8f8f8",
+    width: "100%",
+    // marginTop: 35
   },
   menu: {
     padding: 10,
   },
   sidebar: {
-    position: 'absolute',
+    position: "absolute",
     top: 50,
     left: 10,
     padding: 10,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
+    backgroundColor: "#fff",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
@@ -56,7 +61,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   logoutText: {
-    color: '#f00',
+    color: "#f00",
   },
   username: {
     marginRight: 10,
