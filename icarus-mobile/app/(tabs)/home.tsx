@@ -9,7 +9,6 @@ import ProteinConsumed from "@/components/ProteinConsumed";
 import DateDisplay from "@/components/DateDisplay";
 import AddEntryForm from "@/components/AddEntryForm";
 import EntryList from "@/components/EntryList";
-import PastEntries from "@/components/PastEntries";
 
 export default function Home() {
   const [username, setUsername] = useState<string>("");
@@ -188,12 +187,22 @@ export default function Home() {
     router.push("login");
   };
 
+  const navigateToPreviousEntries = () => {
+    router.push("previousentries");
+  };
+
+  const navigateToHome = () => {
+    router.push("home");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
         toggleDropdown={toggleDropdown}
         showDropdown={showDropdown}
         logout={logout}
+        navigateToPreviousEntries={navigateToPreviousEntries}
+        navigateToHome={navigateToHome}
         username={username}
       />
       <View style={styles.content}>

@@ -5,6 +5,8 @@ interface HeaderProps {
   toggleDropdown: () => void;
   showDropdown: boolean;
   logout: () => void;
+  navigateToPreviousEntries: () => void;
+  navigateToHome: () => void;
   username: string;
 }
 
@@ -12,6 +14,8 @@ const Header: React.FC<HeaderProps> = ({
   toggleDropdown,
   showDropdown,
   logout,
+  navigateToPreviousEntries,
+  navigateToHome,
   username,
 }) => {
   return (
@@ -21,7 +25,16 @@ const Header: React.FC<HeaderProps> = ({
       </TouchableOpacity>
       {showDropdown && (
         <View style={styles.sidebar}>
-          <TouchableOpacity onPress={logout} style={styles.logoutButton}>
+          <TouchableOpacity onPress={navigateToHome} style={styles.button}>
+            <Text>Home</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={navigateToPreviousEntries}
+            style={styles.button}
+          >
+            <Text>Previous Entries</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={logout} style={styles.button}>
             <Text style={styles.logoutText}>LOGOUT</Text>
           </TouchableOpacity>
         </View>
@@ -39,6 +52,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#333",
     width: "100%",
+    zIndex: 999,
   },
   menu: {
     padding: 10,
@@ -57,9 +71,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
-    zIndex: 1,
+    zIndex: 1000,
   },
-  logoutButton: {
+  button: {
     padding: 10,
   },
   logoutText: {
