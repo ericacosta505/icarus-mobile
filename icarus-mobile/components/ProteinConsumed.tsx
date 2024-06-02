@@ -7,8 +7,6 @@ interface ProteinConsumedProps {
   proteinConsumed: string;
 }
 
-// const screenWidth = Dimensions.get("window").width;
-
 const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
   proteinGoalValue,
   proteinConsumed,

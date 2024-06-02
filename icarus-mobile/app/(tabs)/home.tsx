@@ -8,6 +8,7 @@ import ProteinGoal from "@/components/ProteinGoal";
 import ProteinConsumed from "@/components/ProteinConsumed";
 import DateDisplay from "@/components/DateDisplay";
 import AddEntryForm from "@/components/AddEntryForm";
+import EntryList from "@/components/EntryList";
 
 export default function Home() {
   const [username, setUsername] = useState<string>("");
@@ -18,6 +19,7 @@ export default function Home() {
   const [isEntryLoading, setisEntryLoading] = useState<boolean>(true);
   const [todaysEntries, setTodaysEntries] = useState([]);
   const [pastEntries, setPastEntries] = useState([]);
+  const [entryDeleted, setEntryDeleted] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -161,11 +163,11 @@ export default function Home() {
 
   useEffect(() => {
     fetchTodaysEntries();
-  }, []);
+  }, [entryDeleted]);
 
   useEffect(() => {
     fetchSumTodaysEntries();
-  }, []);
+  }, [entryDeleted]);
 
   const updateProteinGoal = (newGoal: string) => {
     setProteinGoal(newGoal);
@@ -173,6 +175,11 @@ export default function Home() {
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
+  };
+
+  const handleEntryDelete = () => {
+    setEntryDeleted(!entryDeleted);
+    fetchSumTodaysEntries();
   };
 
   const logout = async () => {
@@ -208,6 +215,15 @@ export default function Home() {
             fetchPastEntries();
           }}
         />
+        <EntryList
+          todaysEntries={todaysEntries}
+          isEntryLoading={isEntryLoading}
+          onEntryDelete={() => {
+            fetchTodaysEntries();
+            fetchPastEntries();
+          }}
+          handleEntryDelete={handleEntryDelete}
+        />
       </View>
     </SafeAreaView>
   );
@@ -219,8 +235,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#333",
   },
   content: {
-    flex: 1,
-    justifyContent: "center",
+    display: "flex",
+    flexDirection: "column",
     alignItems: "center",
   },
   doubleContainer: {
