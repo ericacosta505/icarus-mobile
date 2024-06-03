@@ -19,7 +19,7 @@ export default function Signup() {
 
   const signup = async (credentials: SignupCredentials) => {
     try {
-      const response = await fetch("http://localhost:4000/signup", {
+      const response = await fetch("https://icarus-backend.onrender.com/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

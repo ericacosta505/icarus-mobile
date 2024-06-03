@@ -33,7 +33,7 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({ onEntryAdded }) => {
     const token = await SecureStore.getItemAsync("token");
 
     try {
-      const response = await fetch(`http://localhost:4000/user/addEntry`, {
+      const response = await fetch(`https://icarus-backend.onrender.com/user/addEntry`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

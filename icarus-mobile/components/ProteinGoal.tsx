@@ -45,7 +45,7 @@ const ProteinGoal: React.FC<ProteinGoalProps> = ({
   const handleUpdateClick = async () => {
     const token = await SecureStore.getItemAsync("token");
     if (token) {
-      fetch(`http://localhost:4000/user/updateProteinGoal`, {
+      fetch(`https://icarus-backend.onrender.com/user/updateProteinGoal`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

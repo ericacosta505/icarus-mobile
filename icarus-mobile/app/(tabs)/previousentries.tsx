@@ -19,7 +19,7 @@ export default function PreviousEntires() {
         return;
       }
       try {
-        const response = await fetch("http://localhost:4000", {
+        const response = await fetch("https://icarus-backend.onrender.com", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -47,7 +47,7 @@ export default function PreviousEntires() {
     const token = await SecureStore.getItemAsync("token");
     try {
       const response = await fetch(
-        "http://localhost:4000/user/getAllPastEntries",
+        "https://icarus-backend.onrender.com/user/getAllPastEntries",
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -30,7 +30,7 @@ export default function Home() {
         return;
       }
       try {
-        const response = await fetch("http://localhost:4000", {
+        const response = await fetch("https://icarus-backend.onrender.com", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export default function Home() {
       if (token) {
         try {
           const response = await fetch(
-            "http://localhost:4000/user/getProteinGoal",
+            "https://icarus-backend.onrender.com/user/getProteinGoal",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -88,7 +88,7 @@ export default function Home() {
     const token = await SecureStore.getItemAsync("token");
     try {
       const response = await fetch(
-        "http://localhost:4000/user/sumTodaysEntries",
+        "https://icarus-backend.onrender.com/user/sumTodaysEntries",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -114,7 +114,7 @@ export default function Home() {
     try {
       setisEntryLoading(true);
       const response = await fetch(
-        "http://localhost:4000/user/getTodaysEntries",
+        "https://icarus-backend.onrender.com/user/getTodaysEntries",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -139,7 +139,7 @@ export default function Home() {
     const token = await SecureStore.getItemAsync("token");
     try {
       const response = await fetch(
-        "http://localhost:4000/user/getAllPastEntries",
+        "https://icarus-backend.onrender.com/user/getAllPastEntries",
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -19,7 +19,7 @@ export default function Login() {
 
   const login = async (credentials: Credentials) => {
     try {
-      const response = await fetch("http://localhost:4000/login", {
+      const response = await fetch("https://icarus-backend.onrender.com/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

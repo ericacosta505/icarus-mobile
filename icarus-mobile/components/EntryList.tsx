@@ -37,7 +37,7 @@ const EntryList: React.FC<EntryListProps> = ({
 
     try {
       const response = await fetch(
-        `http://localhost:4000/user/deleteEntry/${entryId}`,
+        `https://icarus-backend.onrender.com/user/deleteEntry/${entryId}`,
         {
           method: "DELETE",
           headers: {
