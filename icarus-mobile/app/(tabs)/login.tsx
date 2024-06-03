@@ -81,6 +81,9 @@ export default function Login() {
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
             </View>
+            <Link href="/signup" style={styles.signupLink}>
+              <Text style={styles.signupText}>Don't have an account? Sign up</Text>
+            </Link>
           </View>
         </View>
       </ImageBackground>
