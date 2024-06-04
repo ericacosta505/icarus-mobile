@@ -1,18 +1,49 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-import { PieChart } from "react-native-chart-kit";
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, StyleSheet, Animated } from 'react-native';
+import { PieChart } from 'react-native-chart-kit';
 
 interface ProteinConsumedProps {
   proteinGoalValue: string;
   proteinConsumed: string;
 }
 
+interface ChartData {
+  name: string;
+  protein: number;
+  color: string;
+  legendFontColor: string;
+  legendFontSize: number;
+}
+
 const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
   proteinGoalValue,
   proteinConsumed,
 }) => {
-  const goalValue = Number(proteinGoalValue);
-  const consumedValue = Number(proteinConsumed);
+  const goalValue = parseFloat(proteinGoalValue);
+  const initialConsumedValue = parseFloat(proteinConsumed);
+
+  const animationValue = useRef(new Animated.Value(0)).current;
+  const [chartData, setChartData] = useState<ChartData[]>([
+    { name: "Protein Consumed", protein: 0, color: "#fff", legendFontColor: "#fff", legendFontSize: 12 },
+    { name: "Remaining Goal", protein: goalValue, color: "rgba(0, 0, 0, 1)", legendFontColor: "#FFFFFF", legendFontSize: 12 }
+  ]);
+
+  useEffect(() => {
+    Animated.timing(animationValue, {
+      toValue: initialConsumedValue,
+      duration: 1500,
+      useNativeDriver: false
+    }).start();
+
+    const listenerId = animationValue.addListener(({ value }) => {
+      setChartData([
+        { name: "Protein Consumed", protein: value, color: "#fff", legendFontColor: "#fff", legendFontSize: 12 },
+        { name: "Remaining Goal", protein: goalValue - value, color: "rgba(0, 0, 0, 1)", legendFontColor: "#FFFFFF", legendFontSize: 12 }
+      ]);
+    });
+
+    return () => animationValue.removeListener(listenerId);
+  }, [initialConsumedValue, goalValue]);
 
   const chartConfig = {
     backgroundGradientFrom: "transparent",
@@ -22,39 +53,19 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
     strokeWidth: 2,
   };
 
-  const data = [
-    {
-      name: "Protein Consumed",
-      protein: consumedValue,
-      color: "#fff",
-      legendFontColor: "#fff",
-      legendFontSize: 10,
-    },
-    {
-      name: "Remaining Goal",
-      protein: goalValue - consumedValue > 0 ? goalValue - consumedValue : 0,
-      color: "rgba(0, 0, 0, 1)",
-      legendFontColor: "#FFFFFF",
-      legendFontSize: 10,
-    },
-  ];
-
   return (
     <View style={styles.chartContainer}>
       {goalValue === 0 ? (
         <Text style={styles.noGoal}>No goal set</Text>
       ) : (
         <PieChart
-          data={data}
+          data={chartData}
           width={400}
-          height={200}
+          height={220}
           chartConfig={chartConfig}
           accessor={"protein"}
           backgroundColor={"transparent"}
           paddingLeft={"0"}
-          avoidFalseZero={true}
-          style={{ alignItems: "center", justifyContent: "center" }}
-          absolute
         />
       )}
     </View>
@@ -68,7 +79,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: 410,
-    height: 200,
+    height: 220,
     borderRadius: 20,
     marginTop: 10,
     shadowColor: "#000",
@@ -79,6 +90,7 @@ const styles = StyleSheet.create({
   },
   noGoal: {
     color: "#fff",
+    fontSize: 16,
   },
 });
 
