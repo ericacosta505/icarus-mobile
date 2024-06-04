@@ -33,17 +33,20 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({ onEntryAdded }) => {
     const token = await SecureStore.getItemAsync("token");
 
     try {
-      const response = await fetch(`https://icarus-backend.onrender.com/user/addEntry`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          mealName,
-          proteinAmount: Number(proteinAmount),
-        }),
-      });
+      const response = await fetch(
+        `https://icarus-backend.onrender.com/user/addEntry`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            mealName,
+            proteinAmount: Number(proteinAmount),
+          }),
+        }
+      );
 
       if (response.ok) {
         setMealName("");
@@ -94,6 +97,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     padding: 10,
+    marginTop: 10,
   },
   containerTitle: {
     color: "#fff",

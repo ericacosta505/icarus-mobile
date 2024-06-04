@@ -214,16 +214,16 @@ export default function Home() {
           />
           <DateDisplay />
         </View>
-        <ProteinConsumed
-          proteinGoalValue={proteinGoal}
-          proteinConsumed={proteinConsumed}
-        />
         <AddEntryForm
           onEntryAdded={() => {
             fetchTodaysEntries();
             fetchSumTodaysEntries();
             fetchPastEntries();
           }}
+        />
+        <ProteinConsumed
+          proteinGoalValue={proteinGoal}
+          proteinConsumed={proteinConsumed}
         />
         <EntryList
           todaysEntries={todaysEntries}
