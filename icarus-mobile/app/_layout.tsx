@@ -11,6 +11,7 @@ export default function RootLayout() {
           headerTransparent: true,
           headerShown: false,
           animation: "none",
+          gestureEnabled: false,
         }}
       />
     </Stack>
