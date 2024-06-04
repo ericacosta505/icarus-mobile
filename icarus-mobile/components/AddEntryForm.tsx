@@ -7,6 +7,7 @@ import {
   Alert,
   Text,
   TouchableOpacity,
+  Keyboard
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
 
@@ -79,7 +80,7 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({ onEntryAdded }) => {
           value={proteinAmount}
           keyboardType="numeric"
         />
-        <TouchableOpacity style={styles.button} onPress={handleAddEntry}>
+        <TouchableOpacity style={styles.button} onPress={()=>{handleAddEntry(), Keyboard.dismiss()}}>
           <Text style={styles.buttonText}>Add</Text>
         </TouchableOpacity>
       </View>
