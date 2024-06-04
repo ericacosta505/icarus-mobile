@@ -42,7 +42,7 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
   return (
     <View style={styles.chartContainer}>
       {goalValue === 0 ? (
-        <Text>No goal set</Text>
+        <Text style={styles.noGoal}>No goal set</Text>
       ) : (
         <PieChart
           data={data}
@@ -72,6 +72,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginTop: 10,
     // marginBottom: 10,
+  },
+  noGoal: {
+    color: "#fff",
   },
 });
 
