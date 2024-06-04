@@ -1,17 +1,42 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, Button, Alert, ImageBackground, StatusBar, TouchableOpacity } from "react-native";
+import React, { useState, ReactNode } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Button,
+  Alert,
+  ImageBackground,
+  StatusBar,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { Link, useRouter } from "expo-router";
 import backgroundImage from "../../assets/images/icarus.png";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 
 interface Credentials {
   email: string;
   password: string;
 }
 
+interface DismissKeyboardProps {
+  children: ReactNode;
+}
+
+const DismissKeyboard: React.FC<DismissKeyboardProps> = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
+
 export default function Login() {
-  const [inputValue, setInputValue] = useState<Credentials>({ email: "", password: "" });
-  const router = useRouter()
+  const [inputValue, setInputValue] = useState<Credentials>({
+    email: "",
+    password: "",
+  });
+  const router = useRouter();
 
   const handleOnChange = (name: keyof Credentials, value: string) => {
     setInputValue((prevState) => ({ ...prevState, [name]: value }));
@@ -19,22 +44,28 @@ export default function Login() {
 
   const login = async (credentials: Credentials) => {
     try {
-      const response = await fetch("https://icarus-backend.onrender.com/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials)
-      });
+      const response = await fetch(
+        "https://icarus-backend.onrender.com/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(credentials),
+        }
+      );
 
       const data = await response.json();
 
       if (data.success) {
-        const token = String(data.token)
-        await SecureStore.setItemAsync('token', token);
+        const token = String(data.token);
+        await SecureStore.setItemAsync("token", token);
         setTimeout(() => router.push("home"), 1000);
       } else {
-        Alert.alert("Login Failed", data.message || "Please check your credentials");
+        Alert.alert(
+          "Login Failed",
+          data.message || "Please check your credentials"
+        );
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -48,46 +79,53 @@ export default function Login() {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#000" />
-      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
-        <View style={styles.overlay}>
-          <Text style={styles.title}>Icarus: Protein Tracker</Text>
-          <View style={styles.formContainer}>
-            <Text style={styles.header}>Login</Text>
-            <View style={styles.inputBlock}>
-              <Text style={styles.label}>Email</Text>
-              <TextInput
-                style={styles.input}
-                value={inputValue.email}
-                placeholder="Enter your email"
-                placeholderTextColor="#ccc"
-                onChangeText={(value) => handleOnChange("email", value)}
-              />
-            </View>
-            <View style={styles.inputBlock}>
-              <Text style={styles.label}>Password</Text>
-              <TextInput
-                style={styles.input}
-                value={inputValue.password}
-                placeholder="Enter your password"
-                placeholderTextColor="#ccc"
-                secureTextEntry
-                onChangeText={(value) => handleOnChange("password", value)}
-              />
-            </View>
-            <View style={styles.buttonContainer}>
+    <DismissKeyboard>
+      <View style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#000" />
+        <ImageBackground
+          source={backgroundImage}
+          style={styles.backgroundImage}
+        >
+          <View style={styles.overlay}>
+            <Text style={styles.title}>Icarus: Protein Tracker</Text>
+            <View style={styles.formContainer}>
+              <Text style={styles.header}>Login</Text>
+              <View style={styles.inputBlock}>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                  style={styles.input}
+                  value={inputValue.email}
+                  placeholder="Enter your email"
+                  placeholderTextColor="#ccc"
+                  onChangeText={(value) => handleOnChange("email", value)}
+                />
+              </View>
+              <View style={styles.inputBlock}>
+                <Text style={styles.label}>Password</Text>
+                <TextInput
+                  style={styles.input}
+                  value={inputValue.password}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#ccc"
+                  secureTextEntry
+                  onChangeText={(value) => handleOnChange("password", value)}
+                />
+              </View>
+              <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                    <Text style={styles.buttonText}>Login</Text>
+                  <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
+              </View>
+              <Link href="/signup" style={styles.signupLink}>
+                <Text style={styles.signupText}>
+                  Don't have an account? Sign up
+                </Text>
+              </Link>
             </View>
-            <Link href="/signup" style={styles.signupLink}>
-              <Text style={styles.signupText}>Don't have an account? Sign up</Text>
-            </Link>
           </View>
-        </View>
-      </ImageBackground>
-    </View>
+        </ImageBackground>
+      </View>
+    </DismissKeyboard>
   );
 }
 

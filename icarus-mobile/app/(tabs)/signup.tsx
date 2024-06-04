@@ -1,5 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TextInput, Button, Alert, ImageBackground, StatusBar, TouchableOpacity } from "react-native";
+import React, { useState, useEffect, ReactNode } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Button,
+  Alert,
+  ImageBackground,
+  StatusBar,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { Link, useRouter } from "expo-router";
 import backgroundImage from "../../assets/images/icarus.png";
 
@@ -9,9 +21,23 @@ interface SignupCredentials {
   username: string;
 }
 
+interface DismissKeyboardProps {
+  children: ReactNode;
+}
+
+const DismissKeyboard: React.FC<DismissKeyboardProps> = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
+
 export default function Signup() {
-  const [inputValue, setInputValue] = useState<SignupCredentials>({ email: "", password: "", username: "" });
-  const router = useRouter()
+  const [inputValue, setInputValue] = useState<SignupCredentials>({
+    email: "",
+    password: "",
+    username: "",
+  });
+  const router = useRouter();
 
   const handleOnChange = (name: keyof SignupCredentials, value: string) => {
     setInputValue((prevState) => ({ ...prevState, [name]: value }));
@@ -19,13 +45,16 @@ export default function Signup() {
 
   const signup = async (credentials: SignupCredentials) => {
     try {
-      const response = await fetch("https://icarus-backend.onrender.com/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials)
-      });
+      const response = await fetch(
+        "https://icarus-backend.onrender.com/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(credentials),
+        }
+      );
 
       const data = await response.json();
 
@@ -46,58 +75,64 @@ export default function Signup() {
     setInputValue({ email: "", password: "", username: "" });
   };
 
-
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#000" />
-      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
-        <View style={styles.overlay}>
-          <Text style={styles.title}>Icarus: Protein Tracker</Text>
-          <View style={styles.formContainer}>
-            <Text style={styles.header}>Signup</Text>
-            <View style={styles.inputBlock}>
-              <Text style={styles.label}>Email</Text>
-              <TextInput
-                style={styles.input}
-                value={inputValue.email}
-                placeholder="Enter your email"
-                placeholderTextColor="#ccc"
-                onChangeText={(value) => handleOnChange("email", value)}
-              />
+    <DismissKeyboard>
+      <View style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#000" />
+        <ImageBackground
+          source={backgroundImage}
+          style={styles.backgroundImage}
+        >
+          <View style={styles.overlay}>
+            <Text style={styles.title}>Icarus: Protein Tracker</Text>
+            <View style={styles.formContainer}>
+              <Text style={styles.header}>Signup</Text>
+              <View style={styles.inputBlock}>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                  style={styles.input}
+                  value={inputValue.email}
+                  placeholder="Enter your email"
+                  placeholderTextColor="#ccc"
+                  onChangeText={(value) => handleOnChange("email", value)}
+                />
+              </View>
+              <View style={styles.inputBlock}>
+                <Text style={styles.label}>Username</Text>
+                <TextInput
+                  style={styles.input}
+                  value={inputValue.username}
+                  placeholder="Enter your username"
+                  placeholderTextColor="#ccc"
+                  onChangeText={(value) => handleOnChange("username", value)}
+                />
+              </View>
+              <View style={styles.inputBlock}>
+                <Text style={styles.label}>Password</Text>
+                <TextInput
+                  style={styles.input}
+                  value={inputValue.password}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#ccc"
+                  secureTextEntry
+                  onChangeText={(value) => handleOnChange("password", value)}
+                />
+              </View>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                  <Text style={styles.buttonText}>Signup</Text>
+                </TouchableOpacity>
+              </View>
+              <Link href="/login" style={styles.signupLink}>
+                <Text style={styles.signupText}>
+                  Already have an account? Login
+                </Text>
+              </Link>
             </View>
-            <View style={styles.inputBlock}>
-              <Text style={styles.label}>Username</Text>
-              <TextInput
-                style={styles.input}
-                value={inputValue.username}
-                placeholder="Enter your username"
-                placeholderTextColor="#ccc"
-                onChangeText={(value) => handleOnChange("username", value)}
-              />
-            </View>
-            <View style={styles.inputBlock}>
-              <Text style={styles.label}>Password</Text>
-              <TextInput
-                style={styles.input}
-                value={inputValue.password}
-                placeholder="Enter your password"
-                placeholderTextColor="#ccc"
-                secureTextEntry
-                onChangeText={(value) => handleOnChange("password", value)}
-              />
-            </View>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                <Text style={styles.buttonText}>Signup</Text>
-              </TouchableOpacity>
-            </View>
-            <Link href="/login" style={styles.signupLink}>
-              <Text style={styles.signupText}>Already have an account? Login</Text>
-            </Link>
           </View>
-        </View>
-      </ImageBackground>
-    </View>
+        </ImageBackground>
+      </View>
+    </DismissKeyboard>
   );
 }
 

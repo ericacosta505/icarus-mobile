@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import React, { useEffect, useState, ReactNode } from "react";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,6 +15,16 @@ import ProteinConsumed from "@/components/ProteinConsumed";
 import DateDisplay from "@/components/DateDisplay";
 import AddEntryForm from "@/components/AddEntryForm";
 import EntryList from "@/components/EntryList";
+
+interface DismissKeyboardProps {
+  children: ReactNode;
+}
+
+const DismissKeyboard: React.FC<DismissKeyboardProps> = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 export default function Home() {
   const [username, setUsername] = useState<string>("");
@@ -196,46 +212,48 @@ export default function Home() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Header
-        toggleDropdown={toggleDropdown}
-        showDropdown={showDropdown}
-        logout={logout}
-        navigateToPreviousEntries={navigateToPreviousEntries}
-        navigateToHome={navigateToHome}
-        username={username}
-      />
-      <View style={styles.content}>
-        <View style={styles.doubleContainer}>
-          <ProteinGoal
-            proteinGoalValue={proteinGoal}
-            isLoading={isLoading}
-            onUpdate={updateProteinGoal}
+    <DismissKeyboard>
+      <SafeAreaView style={styles.container}>
+        <Header
+          toggleDropdown={toggleDropdown}
+          showDropdown={showDropdown}
+          logout={logout}
+          navigateToPreviousEntries={navigateToPreviousEntries}
+          navigateToHome={navigateToHome}
+          username={username}
+        />
+        <View style={styles.content}>
+          <View style={styles.doubleContainer}>
+            <ProteinGoal
+              proteinGoalValue={proteinGoal}
+              isLoading={isLoading}
+              onUpdate={updateProteinGoal}
+            />
+            <DateDisplay />
+          </View>
+          <AddEntryForm
+            onEntryAdded={() => {
+              fetchTodaysEntries();
+              fetchSumTodaysEntries();
+              fetchPastEntries();
+            }}
           />
-          <DateDisplay />
+          <ProteinConsumed
+            proteinGoalValue={proteinGoal}
+            proteinConsumed={proteinConsumed}
+          />
+          <EntryList
+            todaysEntries={todaysEntries}
+            isEntryLoading={isEntryLoading}
+            onEntryDelete={() => {
+              fetchTodaysEntries();
+              fetchPastEntries();
+            }}
+            handleEntryDelete={handleEntryDelete}
+          />
         </View>
-        <AddEntryForm
-          onEntryAdded={() => {
-            fetchTodaysEntries();
-            fetchSumTodaysEntries();
-            fetchPastEntries();
-          }}
-        />
-        <ProteinConsumed
-          proteinGoalValue={proteinGoal}
-          proteinConsumed={proteinConsumed}
-        />
-        <EntryList
-          todaysEntries={todaysEntries}
-          isEntryLoading={isEntryLoading}
-          onEntryDelete={() => {
-            fetchTodaysEntries();
-            fetchPastEntries();
-          }}
-          handleEntryDelete={handleEntryDelete}
-        />
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </DismissKeyboard>
   );
 }
 
