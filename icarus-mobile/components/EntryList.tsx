@@ -67,7 +67,9 @@ const EntryList: React.FC<EntryListProps> = ({
       {isEntryLoading ? (
         <Loader />
       ) : todaysEntries.length === 0 ? (
-        <Text style={styles.noEntries}>No Entries Found</Text>
+        <View style={styles.noEntriesContainer}>
+          <Text style={styles.noEntries}>No Entries Found</Text>
+        </View>
       ) : (
         <FlatList
           data={todaysEntries}
@@ -112,13 +114,15 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 20,
-    marginBottom: 10,
+  },
+  noEntriesContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   noEntries: {
     fontSize: 16,
     color: "#fff",
-    textAlign: "center",
-    marginTop: 170,
   },
   entryItem: {
     flexDirection: "row",
