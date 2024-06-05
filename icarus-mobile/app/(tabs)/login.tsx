@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  Button,
   Alert,
   ImageBackground,
   StatusBar,

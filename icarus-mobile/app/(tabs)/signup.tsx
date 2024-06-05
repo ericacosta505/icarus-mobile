@@ -1,10 +1,9 @@
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, ReactNode } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
-  Button,
   Alert,
   ImageBackground,
   StatusBar,

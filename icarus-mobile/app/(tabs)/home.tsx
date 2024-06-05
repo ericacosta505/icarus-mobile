@@ -2,7 +2,6 @@ import React, { useEffect, useState, ReactNode } from "react";
 import {
   View,
   StyleSheet,
-  ScrollView,
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
