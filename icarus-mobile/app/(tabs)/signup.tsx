@@ -5,14 +5,14 @@ import {
   StyleSheet,
   TextInput,
   Alert,
-  ImageBackground,
   StatusBar,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  Image,
 } from "react-native";
 import { Link, useRouter } from "expo-router";
-import backgroundImage from "../../assets/images/icarus.png";
+import logov2 from "../../assets/images/logov2-removebg-preview.png";
 
 interface SignupCredentials {
   email: string;
@@ -78,58 +78,53 @@ export default function Signup() {
     <DismissKeyboard>
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#000" />
-        <ImageBackground
-          source={backgroundImage}
-          style={styles.backgroundImage}
-        >
-          <View style={styles.overlay}>
-            <Text style={styles.title}>Icarus: Protein Tracker</Text>
-            <View style={styles.formContainer}>
-              <Text style={styles.header}>Signup</Text>
-              <View style={styles.inputBlock}>
-                <Text style={styles.label}>Email</Text>
-                <TextInput
-                  style={styles.input}
-                  value={inputValue.email}
-                  placeholder="Enter your email"
-                  placeholderTextColor="#ccc"
-                  onChangeText={(value) => handleOnChange("email", value)}
-                />
-              </View>
-              <View style={styles.inputBlock}>
-                <Text style={styles.label}>Username</Text>
-                <TextInput
-                  style={styles.input}
-                  value={inputValue.username}
-                  placeholder="Enter your username"
-                  placeholderTextColor="#ccc"
-                  onChangeText={(value) => handleOnChange("username", value)}
-                />
-              </View>
-              <View style={styles.inputBlock}>
-                <Text style={styles.label}>Password</Text>
-                <TextInput
-                  style={styles.input}
-                  value={inputValue.password}
-                  placeholder="Enter your password"
-                  placeholderTextColor="#ccc"
-                  secureTextEntry
-                  onChangeText={(value) => handleOnChange("password", value)}
-                />
-              </View>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                  <Text style={styles.buttonText}>Signup</Text>
-                </TouchableOpacity>
-              </View>
-              <Link href="/login" style={styles.signupLink}>
-                <Text style={styles.signupText}>
-                  Already have an account? Login
-                </Text>
-              </Link>
+        <View style={styles.overlay}>
+          <Image style={styles.logo} source={logov2}></Image>
+          <View style={styles.formContainer}>
+            <Text style={styles.header}>Signup</Text>
+            <View style={styles.inputBlock}>
+              <Text style={styles.label}>Email</Text>
+              <TextInput
+                style={styles.input}
+                value={inputValue.email}
+                placeholder="Enter your email"
+                placeholderTextColor="#ccc"
+                onChangeText={(value) => handleOnChange("email", value)}
+              />
             </View>
+            <View style={styles.inputBlock}>
+              <Text style={styles.label}>Username</Text>
+              <TextInput
+                style={styles.input}
+                value={inputValue.username}
+                placeholder="Enter your username"
+                placeholderTextColor="#ccc"
+                onChangeText={(value) => handleOnChange("username", value)}
+              />
+            </View>
+            <View style={styles.inputBlock}>
+              <Text style={styles.label}>Password</Text>
+              <TextInput
+                style={styles.input}
+                value={inputValue.password}
+                placeholder="Enter your password"
+                placeholderTextColor="#ccc"
+                secureTextEntry
+                onChangeText={(value) => handleOnChange("password", value)}
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <Text style={styles.buttonText}>Signup</Text>
+              </TouchableOpacity>
+            </View>
+            <Link href="/login" style={styles.signupLink}>
+              <Text style={styles.signupText}>
+                Already have an account? Login
+              </Text>
+            </Link>
           </View>
-        </ImageBackground>
+        </View>
       </View>
     </DismissKeyboard>
   );
@@ -141,37 +136,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
-  },
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "#333",
     width: "100%",
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "white",
-    textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10,
-    marginBottom: 30,
-    textAlign: "center",
+  logo: {
+    width: 80,
+    height: 80,
   },
   formContainer: {
     width: "80%",
     padding: 20,
     borderRadius: 10,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    backgroundColor: "#454545",
   },
   header: {
     fontSize: 24,

@@ -1,43 +1,35 @@
 import React from "react";
-import {
-  ImageBackground,
-  Text,
-  View,
-  StyleSheet,
-  StatusBar,
-} from "react-native";
-import backgroundImage from "../assets/images/icarus.png";
+import { Text, View, StyleSheet, StatusBar, Image } from "react-native";
 import { Link } from "expo-router";
+import logov2 from "../assets/images/logov2-removebg-preview.png";
 
 export default function Index() {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#000" />
-      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
-        <View style={styles.overlay}>
-          <Text style={styles.title}>Icarus: Protein Tracker</Text>
-          <Text style={styles.introText}>
-            Welcome to Icarus, your personal protein tracking assistant. Keep
-            track of your daily protein intake easily and effectively.
-          </Text>
-          <View style={styles.buttonContainer}>
-            <Link
-              style={styles.button}
-              onPress={() => console.log("Navigate to Login")}
-              href="/login"
-            >
-              <Text style={styles.buttonText}>Login</Text>
-            </Link>
-            <Link
-              style={styles.button}
-              onPress={() => console.log("Navigate to Signup")}
-              href="/signup"
-            >
-              <Text style={styles.buttonText}>Signup</Text>
-            </Link>
-          </View>
+      <View style={styles.overlay}>
+        <Image style={styles.logo} source={logov2}></Image>
+        <Text style={styles.introText}>
+          Welcome to Icarus, your personal protein tracking assistant. Keep
+          track of your daily protein intake easily and effectively.
+        </Text>
+        <View style={styles.buttonContainer}>
+          <Link
+            style={styles.button}
+            onPress={() => console.log("Navigate to Login")}
+            href="/login"
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </Link>
+          <Link
+            style={styles.button}
+            onPress={() => console.log("Navigate to Signup")}
+            href="/signup"
+          >
+            <Text style={styles.buttonText}>Signup</Text>
+          </Link>
         </View>
-      </ImageBackground>
+      </View>
     </View>
   );
 }
@@ -58,21 +50,15 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "#333",
     width: "100%",
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "white",
-    textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10,
-    marginBottom: 30,
-    textAlign: "center",
+  logo: {
+    width: 80,
+    height: 80,
   },
   introText: {
     fontSize: 18,
