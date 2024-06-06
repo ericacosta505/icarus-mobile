@@ -1,5 +1,6 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
+import logov2 from "../assets/images/logov2-removebg-preview.png";
 
 interface HeaderProps {
   toggleDropdown: () => void;
@@ -39,6 +40,7 @@ const Header: React.FC<HeaderProps> = ({
           </TouchableOpacity>
         </View>
       )}
+      <Image style={styles.logo} source={logov2}></Image>
       <Text style={styles.username}>{username}</Text>
     </View>
   );
@@ -85,6 +87,10 @@ const styles = StyleSheet.create({
   },
   logoutText: {
     color: "#f00",
+  },
+  logo: {
+    height: 50,
+    width: 50,
   },
   username: {
     marginRight: 10,
