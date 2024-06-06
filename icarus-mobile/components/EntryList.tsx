@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import Loader from "./Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 interface EntryListProps {
   todaysEntries: Array<{
@@ -83,7 +85,7 @@ const EntryList: React.FC<EntryListProps> = ({
                 onPress={() => handleDeleteEntry(item._id)}
                 style={styles.deleteButton}
               >
-                <Text style={styles.deleteButtonText}>🗑</Text>
+                <FontAwesomeIcon icon={faTrash} size={20} color="#fff" />
               </TouchableOpacity>
             </View>
           )}
