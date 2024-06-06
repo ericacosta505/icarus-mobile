@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
     width: 410,
-    height: 250,
+    height: 200,
     marginTop: 10,
     display: "flex",
     flexDirection: "column",
@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 20,
+    marginBottom: 10,
   },
   noEntriesContainer: {
     flex: 1,
