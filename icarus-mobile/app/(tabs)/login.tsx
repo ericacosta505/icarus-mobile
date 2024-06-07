@@ -93,6 +93,7 @@ export default function Login() {
                 placeholder="Enter your email"
                 placeholderTextColor="#ccc"
                 onChangeText={(value) => handleOnChange("email", value)}
+                autoCapitalize="none"
               />
             </View>
             <View style={styles.inputBlock}>
@@ -104,6 +105,7 @@ export default function Login() {
                 placeholderTextColor="#ccc"
                 secureTextEntry
                 onChangeText={(value) => handleOnChange("password", value)}
+                autoCapitalize="none"
               />
             </View>
             <View style={styles.buttonContainer}>

@@ -90,6 +90,7 @@ export default function Signup() {
                 placeholder="Enter your email"
                 placeholderTextColor="#ccc"
                 onChangeText={(value) => handleOnChange("email", value)}
+                autoCapitalize="none"
               />
             </View>
             <View style={styles.inputBlock}>
@@ -100,6 +101,7 @@ export default function Signup() {
                 placeholder="Enter your username"
                 placeholderTextColor="#ccc"
                 onChangeText={(value) => handleOnChange("username", value)}
+                autoCapitalize="none"
               />
             </View>
             <View style={styles.inputBlock}>
@@ -111,6 +113,7 @@ export default function Signup() {
                 placeholderTextColor="#ccc"
                 secureTextEntry
                 onChangeText={(value) => handleOnChange("password", value)}
+                autoCapitalize="none"
               />
             </View>
             <View style={styles.buttonContainer}>
