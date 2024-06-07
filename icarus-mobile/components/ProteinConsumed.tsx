@@ -81,7 +81,9 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
     <View style={styles.chartContainer}>
       <Text style={styles.containerTitle}>Protein Consumed</Text>
       {goalValue === 0 ? (
-        <Text style={styles.noGoal}>No goal set</Text>
+        <View style={styles.noEntriesContainer}>
+        <Text style={styles.noGoal}>No Goal Set</Text>
+      </View>
       ) : (
         <PieChart
           data={chartData}
@@ -120,6 +122,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: "flex-start",
     marginTop: 10,
+  },
+  noEntriesContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   noGoal: {
     color: "#fff",
