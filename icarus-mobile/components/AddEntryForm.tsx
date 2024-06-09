@@ -6,7 +6,7 @@ import {
   Alert,
   Text,
   TouchableOpacity,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
 
@@ -32,6 +32,9 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({ onEntryAdded }) => {
 
     const token = await SecureStore.getItemAsync("token");
 
+    let time = new Date().toLocaleString().replace(/,/g, "");
+    console.log(time);
+
     try {
       const response = await fetch(
         `https://icarus-backend.onrender.com/user/addEntry`,
@@ -44,6 +47,7 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({ onEntryAdded }) => {
           body: JSON.stringify({
             mealName,
             proteinAmount: Number(proteinAmount),
+            time: time,
           }),
         }
       );
@@ -79,7 +83,12 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({ onEntryAdded }) => {
           value={proteinAmount}
           keyboardType="numeric"
         />
-        <TouchableOpacity style={styles.button} onPress={()=>{handleAddEntry(), Keyboard.dismiss()}}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            handleAddEntry(), Keyboard.dismiss();
+          }}
+        >
           <Text style={styles.buttonText}>Add</Text>
         </TouchableOpacity>
       </View>
