@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity } from "react-native";
 import { Calendar } from "react-native-calendars";
+import * as SecureStore from "expo-secure-store";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 interface Entry {
+  _id: string;
   createdAt: string;
   mealName: string;
   proteinAmount: number;
@@ -10,9 +14,10 @@ interface Entry {
 
 interface PastEntriesProps {
   pastEntries: Entry[];
+  onEntryDelete: ()=> void;
 }
 
-const PastEntries: React.FC<PastEntriesProps> = ({ pastEntries }) => {
+const PastEntries: React.FC<PastEntriesProps> = ({ pastEntries, onEntryDelete }) => {
   const formatDate = (date: Date | string): string => {
     let dateObj = new Date(date);
     return `${dateObj.getFullYear()}-${(dateObj.getMonth() + 1)
@@ -49,6 +54,39 @@ const PastEntries: React.FC<PastEntriesProps> = ({ pastEntries }) => {
     );
     setProteinSum(totalProtein);
   }, [filteredEntries]);
+
+  const handleDeleteEntry = async (entryId: string) => {
+    const token = await SecureStore.getItemAsync("token");
+
+    if (!token) {
+      Alert.alert("Authentication error", "No token found");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://icarus-backend.onrender.com/user/deleteEntry/${entryId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        console.log("Entry deleted successfully.");
+        onEntryDelete();
+      } else {
+        console.error("Failed to delete entry.");
+        Alert.alert("Deletion failed", "Failed to delete entry");
+      }
+    } catch (error) {
+      console.error("Error deleting entry:", error);
+      Alert.alert("Error", "An error occurred while deleting the entry");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -89,6 +127,12 @@ const PastEntries: React.FC<PastEntriesProps> = ({ pastEntries }) => {
               <Text style={styles.entryContent}>
                 {item.mealName} - {item.proteinAmount}g
               </Text>
+              <TouchableOpacity
+                onPress={() => handleDeleteEntry(item._id)}
+                style={styles.deleteButton}
+              >
+                <FontAwesomeIcon icon={faTrash} size={20} color="#fff" />
+              </TouchableOpacity>
             </View>
           )}
           ListEmptyComponent={
@@ -140,10 +184,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginBottom: 5,
+    justifyContent: "space-between"
   },
   entryContent: {
     color: "#fff",
     fontSize: 16,
+  },
+  deleteButton: {
+    padding: 10,
+    borderRadius: 10,
   },
   noEntry: {
     color: "#fff",

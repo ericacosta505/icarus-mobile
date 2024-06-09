@@ -96,7 +96,9 @@ export default function PreviousEntires() {
         navigateToHome={navigateToHome}
         username={username}
       />
-      <PastEntries pastEntries={pastEntries} />
+      <PastEntries pastEntries={pastEntries} onEntryDelete={()=>{
+        fetchPastEntries()
+      }}/>
     </SafeAreaView>
   );
 }
