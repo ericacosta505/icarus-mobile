@@ -15,12 +15,20 @@ interface Entry {
 
 
 export default function PreviousEntries() {
+  const formatDate = (date: Date | string): string => {
+    let dateObj = new Date(date);
+    return `${dateObj.getFullYear()}-${(dateObj.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${dateObj.getDate().toString().padStart(2, "0")}`;
+  };
+
   const router = useRouter();
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [pastEntries, setPastEntries] = useState<Entry[]>([]);
   const [proteinGoal, setProteinGoal] = useState<string>("0");
   const [proteinConsumed, setProteinConsumed] = useState<string>("0");
+  const [selectedDate, setSelectedDate] = useState<string>(formatDate(new Date()));
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -115,7 +123,12 @@ export default function PreviousEntries() {
     setProteinConsumed(totalProteinConsumed.toString());
   }, [pastEntries]);
 
-
+  useEffect(() => {
+    const selectedEntries = pastEntries.filter(entry => formatDate(new Date(entry.createdAt)) === selectedDate);
+    const totalProtein = selectedEntries.reduce((sum, entry) => sum + Number(entry.proteinAmount), 0);
+    setProteinConsumed(totalProtein.toString());
+  }, [selectedDate, pastEntries]); 
+  
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -145,7 +158,7 @@ export default function PreviousEntries() {
       />
       <PastEntries pastEntries={pastEntries} onEntryDelete={()=>{
         fetchPastEntries()
-      }}/>
+      }} onDateChange={setSelectedDate}/>
       <ProteinConsumed proteinGoalValue={proteinGoal} proteinConsumed={proteinConsumed} />
     </SafeAreaView>
   );

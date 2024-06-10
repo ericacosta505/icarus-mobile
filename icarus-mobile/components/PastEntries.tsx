@@ -15,9 +15,10 @@ interface Entry {
 interface PastEntriesProps {
   pastEntries: Entry[];
   onEntryDelete: ()=> void;
+  onDateChange: (date: string) => void;
 }
 
-const PastEntries: React.FC<PastEntriesProps> = ({ pastEntries, onEntryDelete }) => {
+const PastEntries: React.FC<PastEntriesProps> = ({ pastEntries, onEntryDelete, onDateChange }) => {
   const formatDate = (date: Date | string): string => {
     let dateObj = new Date(date);
     return `${dateObj.getFullYear()}-${(dateObj.getMonth() + 1)
@@ -92,7 +93,7 @@ const PastEntries: React.FC<PastEntriesProps> = ({ pastEntries, onEntryDelete })
     <View style={styles.container}>
       <Text style={styles.title}>Past Entries</Text>
       <Calendar
-        onDayPress={(day) => setSelectedDate(day.dateString)}
+        onDayPress={(day) => {setSelectedDate(day.dateString); onDateChange(day.dateString);}}
         current={selectedDate}
         markingType={"custom"}
         theme={{
