@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
     height: 520,
     marginTop: 10,
     justifyContent: "center",
-    marginLeft: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,

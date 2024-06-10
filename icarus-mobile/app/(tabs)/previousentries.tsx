@@ -4,12 +4,23 @@ import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
 import Header from "@/components/Header";
 import PastEntries from "@/components/PastEntries";
+import ProteinConsumed from '@/components/ProteinConsumed'
 
-export default function PreviousEntires() {
+interface Entry {
+  _id: string;
+  createdAt: string;
+  mealName: string;
+  proteinAmount: number;
+}
+
+
+export default function PreviousEntries() {
   const router = useRouter();
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
-  const [pastEntries, setPastEntries] = useState([]);
+  const [pastEntries, setPastEntries] = useState<Entry[]>([]);
+  const [proteinGoal, setProteinGoal] = useState<string>("0");
+  const [proteinConsumed, setProteinConsumed] = useState<string>("0");
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -43,6 +54,34 @@ export default function PreviousEntires() {
     verifyToken();
   }, [router]);
 
+  useEffect(() => {
+    const fetchProteinGoal = async () => {
+      const token = await SecureStore.getItemAsync("token");
+      if (token) {
+        try {
+          const response = await fetch(
+            "https://icarus-backend.onrender.com/user/getProteinGoal",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          const data = await response.json();
+          if (data.proteinGoal) {
+            setProteinGoal(data.proteinGoal);
+          }
+        } catch (error) {
+          console.error("Error fetching protein goal:", error);
+        }
+      }
+    };
+    fetchProteinGoal();
+  }, []);
+
+  
+
   const fetchPastEntries = async () => {
     const token = await SecureStore.getItemAsync("token");
     try {
@@ -68,6 +107,14 @@ export default function PreviousEntires() {
   useEffect(() => {
     fetchPastEntries();
   }, []);
+
+  useEffect(() => {
+    const totalProteinConsumed = pastEntries.reduce((sum, entry) => {
+      return sum + (Number(entry.proteinAmount) || 0);
+    }, 0);
+    setProteinConsumed(totalProteinConsumed.toString());
+  }, [pastEntries]);
+
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -99,13 +146,18 @@ export default function PreviousEntires() {
       <PastEntries pastEntries={pastEntries} onEntryDelete={()=>{
         fetchPastEntries()
       }}/>
+      <ProteinConsumed proteinGoalValue={proteinGoal} proteinConsumed={proteinConsumed} />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "#333",
   },
   content: {
