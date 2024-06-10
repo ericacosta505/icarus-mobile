@@ -100,10 +100,12 @@ export default function Home() {
   }, []);
 
   const fetchSumTodaysEntries = async () => {
+    let time = new Date().toLocaleString().replace(/,/g, "");
+
     const token = await SecureStore.getItemAsync("token");
     try {
       const response = await fetch(
-        "https://icarus-backend.onrender.com/user/sumTodaysEntries",
+        `https://icarus-backend.onrender.com/user/sumTodaysEntries?time=${encodeURIComponent(time)}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -125,11 +127,14 @@ export default function Home() {
   };
 
   const fetchTodaysEntries = async () => {
+    let time = new Date().toLocaleString().replace(/,/g, "");
+    console.log(time)
+
     const token = await SecureStore.getItemAsync("token");
     try {
       setisEntryLoading(true);
       const response = await fetch(
-        "https://icarus-backend.onrender.com/user/getTodaysEntries",
+        `https://icarus-backend.onrender.com/user/getTodaysEntries?time=${encodeURIComponent(time)}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
