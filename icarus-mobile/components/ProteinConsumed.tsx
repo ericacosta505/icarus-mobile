@@ -41,6 +41,7 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
   ]);
 
   useEffect(() => {
+    // Reset the animation value to 0 whenever goalValue changes
     animationValue.setValue(0);
 
     Animated.timing(animationValue, {
@@ -50,17 +51,20 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
     }).start();
 
     const listenerId = animationValue.addListener(({ value }) => {
+      const consumed = Math.min(value, goalValue);
+      const remaining = Math.max(goalValue - value, 0);
+      
       setChartData([
         {
           name: "Protein Consumed",
-          protein: value,
+          protein: consumed,
           color: "#fff",
           legendFontColor: "#fff",
           legendFontSize: 12,
         },
         {
           name: "Remaining Goal",
-          protein: goalValue - value,
+          protein: remaining,
           color: "rgba(0, 0, 0, 1)",
           legendFontColor: "#FFFFFF",
           legendFontSize: 12,
@@ -69,7 +73,7 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
     });
 
     return () => animationValue.removeListener(listenerId);
-  }, [initialConsumedValue, goalValue]); 
+  }, [initialConsumedValue, goalValue]);
 
   const chartConfig = {
     backgroundGradientFrom: "transparent",
