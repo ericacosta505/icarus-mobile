@@ -41,6 +41,8 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
   ]);
 
   useEffect(() => {
+    animationValue.setValue(0);
+
     Animated.timing(animationValue, {
       toValue: initialConsumedValue,
       duration: 1500,
@@ -67,7 +69,7 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
     });
 
     return () => animationValue.removeListener(listenerId);
-  }, [initialConsumedValue, goalValue]);
+  }, [initialConsumedValue, goalValue]); 
 
   const chartConfig = {
     backgroundGradientFrom: "transparent",
