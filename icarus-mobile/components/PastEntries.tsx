@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import { Calendar } from "react-native-calendars";
 import * as SecureStore from "expo-secure-store";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -14,11 +21,15 @@ interface Entry {
 
 interface PastEntriesProps {
   pastEntries: Entry[];
-  onEntryDelete: ()=> void;
+  onEntryDelete: () => void;
   onDateChange: (date: string) => void;
 }
 
-const PastEntries: React.FC<PastEntriesProps> = ({ pastEntries, onEntryDelete, onDateChange }) => {
+const PastEntries: React.FC<PastEntriesProps> = ({
+  pastEntries,
+  onEntryDelete,
+  onDateChange,
+}) => {
   const formatDate = (date: Date | string): string => {
     let dateObj = new Date(date);
     return `${dateObj.getFullYear()}-${(dateObj.getMonth() + 1)
@@ -91,9 +102,17 @@ const PastEntries: React.FC<PastEntriesProps> = ({ pastEntries, onEntryDelete, o
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Past Entries</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>Past Entries</Text>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Add</Text>
+        </TouchableOpacity>
+      </View>
       <Calendar
-        onDayPress={(day) => {setSelectedDate(day.dateString); onDateChange(day.dateString);}}
+        onDayPress={(day) => {
+          setSelectedDate(day.dateString);
+          onDateChange(day.dateString);
+        }}
         current={selectedDate}
         markingType={"custom"}
         theme={{
@@ -162,11 +181,25 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 10,
   },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   title: {
     color: "#fff",
     fontWeight: "bold",
     fontSize: 20,
     marginBottom: 10,
+  },
+  button: {
+    padding: 10,
+    backgroundColor: "#eee",
+    alignItems: "center",
+    borderRadius: 20,
+  },
+  buttonText: {
+    fontWeight: "bold",
   },
   listAndSum: {
     flexDirection: "row",
@@ -184,7 +217,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginBottom: 5,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   entryContent: {
     color: "#fff",
