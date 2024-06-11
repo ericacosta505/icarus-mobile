@@ -41,7 +41,6 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
   ]);
 
   useEffect(() => {
-    // Reset the animation value to 0 whenever goalValue changes
     animationValue.setValue(0);
 
     Animated.timing(animationValue, {
