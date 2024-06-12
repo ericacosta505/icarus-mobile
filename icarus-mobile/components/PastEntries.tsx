@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,8 +6,11 @@ import {
   FlatList,
   Alert,
   TouchableOpacity,
+  TextInput,
+  Keyboard,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import * as SecureStore from "expo-secure-store";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -41,6 +44,10 @@ const PastEntries: React.FC<PastEntriesProps> = ({
     formatDate(new Date())
   );
   const [proteinSum, setProteinSum] = useState<number>(0);
+  const [isAdding, setIsAdding] = useState<boolean>(false);
+  const [mealName, setMealName] = useState<string>("");
+  const [proteinAmount, setProteinAmount] = useState<string>("");
+  const [entryDate, setEntryDate] = useState<Date>(new Date());
 
   const sortedEntries = useMemo(
     () =>
@@ -100,68 +107,162 @@ const PastEntries: React.FC<PastEntriesProps> = ({
     }
   };
 
+  const handleAddEntry = async () => {
+    if (!mealName || !proteinAmount) {
+      Alert.alert("Please fill in all fields.");
+      return;
+    }
+
+    const token = await SecureStore.getItemAsync("token");
+
+    try {
+      const response = await fetch(
+        `https://icarus-backend.onrender.com/user/addEntry`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            mealName,
+            proteinAmount: Number(proteinAmount),
+            time: formatDate(entryDate),
+          }),
+        }
+      );
+
+      if (response.ok) {
+        setMealName("");
+        setProteinAmount("");
+        setIsAdding(false);
+        onEntryDelete(); // Refresh the entries list
+      } else {
+        console.error("Failed to add entry");
+      }
+    } catch (error) {
+      console.error("There was an error adding the entry", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Past Entries</Text>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
+        {isAdding ? (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => setIsAdding(false)}
+          >
+            <Text style={styles.buttonText}>Back</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => setIsAdding(true)}
+          >
+            <Text style={styles.buttonText}>Add</Text>
+          </TouchableOpacity>
+        )}
       </View>
-      <Calendar
-        onDayPress={(day) => {
-          setSelectedDate(day.dateString);
-          onDateChange(day.dateString);
-        }}
-        current={selectedDate}
-        markingType={"custom"}
-        theme={{
-          backgroundColor: "#454545",
-          calendarBackground: "#454545",
-          textSectionTitleColor: "#b6c1cd",
-          textSectionTitleDisabledColor: "#d9e1e8",
-          selectedDayBackgroundColor: "#00adf5",
-          selectedDayTextColor: "#ffffff",
-          todayTextColor: "#00adf5",
-          dayTextColor: "#d9e1e8",
-          textDisabledColor: "#d9e1e8",
-          dotColor: "#00adf5",
-          selectedDotColor: "#ffffff",
-          arrowColor: "#ffffff",
-          monthTextColor: "#ffffff",
-          indicatorColor: "#ffffff",
-          textDayFontWeight: "300",
-          textMonthFontWeight: "bold",
-          textDayHeaderFontWeight: "300",
-          textDayFontSize: 16,
-          textMonthFontSize: 16,
-          textDayHeaderFontSize: 16,
-        }}
-      />
-      <View style={styles.listAndSum}>
-        <FlatList
-          data={filteredEntries}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.entryItem}>
-              <Text style={styles.entryContent}>
-                {item.mealName} - {item.proteinAmount}g
-              </Text>
-              <TouchableOpacity
-                onPress={() => handleDeleteEntry(item._id)}
-                style={styles.deleteButton}
-              >
-                <FontAwesomeIcon icon={faTrash} size={20} color="#fff" />
-              </TouchableOpacity>
-            </View>
-          )}
-          ListEmptyComponent={
-            <Text style={styles.noEntry}>No entries on this date.</Text>
-          }
-          style={styles.entriesList}
-        />
-        <Text style={styles.pastEntrySum}>{proteinSum}g</Text>
-      </View>
+      {isAdding ? (
+        <View style={styles.addEntryForm}>
+          <DateTimePicker
+            value={entryDate}
+            mode="date"
+            display="default"
+            onChange={(event, selectedDate) =>
+              setEntryDate(selectedDate || entryDate)
+            }
+            style={styles.datePicker}
+          />
+          <View style={styles.entryContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Meal Name"
+              placeholderTextColor="#fff"
+              onChangeText={setMealName}
+              value={mealName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Protein Amount"
+              placeholderTextColor="#fff"
+              onChangeText={(value) =>
+                /^\d*$/.test(value) ? setProteinAmount(value) : null
+              }
+              value={proteinAmount}
+              keyboardType="numeric"
+            />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                handleAddEntry();
+                Keyboard.dismiss();
+              }}
+            >
+              <Text style={styles.buttonText}>Add</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ) : (
+        <>
+          <Calendar
+            onDayPress={(day) => {
+              setSelectedDate(day.dateString);
+              onDateChange(day.dateString);
+            }}
+            current={selectedDate}
+            markingType={"custom"}
+            theme={{
+              backgroundColor: "#454545",
+              calendarBackground: "#454545",
+              textSectionTitleColor: "#b6c1cd",
+              textSectionTitleDisabledColor: "#d9e1e8",
+              selectedDayBackgroundColor: "#00adf5",
+              selectedDayTextColor: "#ffffff",
+              todayTextColor: "#00adf5",
+              dayTextColor: "#d9e1e8",
+              textDisabledColor: "#d9e1e8",
+              dotColor: "#00adf5",
+              selectedDotColor: "#ffffff",
+              arrowColor: "#ffffff",
+              monthTextColor: "#ffffff",
+              indicatorColor: "#ffffff",
+              textDayFontWeight: "300",
+              textMonthFontWeight: "bold",
+              textDayHeaderFontWeight: "300",
+              textDayFontSize: 16,
+              textMonthFontSize: 16,
+              textDayHeaderFontSize: 16,
+            }}
+          />
+          <View style={styles.listAndSum}>
+            <FlatList
+              data={filteredEntries}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <View style={styles.entryItem}>
+                  <Text style={styles.entryContent}>
+                    {item.mealName} - {item.proteinAmount}g
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => handleDeleteEntry(item._id)}
+                    style={styles.deleteButton}
+                  >
+                    <FontAwesomeIcon icon={faTrash} size={20} color="#fff" />
+                  </TouchableOpacity>
+                </View>
+              )}
+              ListEmptyComponent={
+                <Text style={styles.noEntry}>No entries on this date.</Text>
+              }
+              style={styles.entriesList}
+            />
+            <Text style={styles.pastEntrySum}>{proteinSum}g</Text>
+          </View>
+        </>
+      )}
     </View>
   );
 };
@@ -239,6 +340,27 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "#fff",
+  },
+  addEntryForm: {
+    marginTop: 20,
+  },
+  input: {
+    flex: 1,
+    marginHorizontal: 5,
+    borderWidth: 2,
+    borderColor: "#fff",
+    color: "#fff",
+    borderRadius: 20,
+    padding: 10,
+  },
+  datePicker: {
+    marginBottom: 10,
+  },
+  entryContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 10,
   },
 });
 
