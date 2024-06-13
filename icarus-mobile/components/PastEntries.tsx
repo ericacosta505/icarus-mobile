@@ -165,104 +165,108 @@ const PastEntries: React.FC<PastEntriesProps> = ({
           </TouchableOpacity>
         )}
       </View>
-      {isAdding ? (
-        <View style={styles.addEntryForm}>
-          <DateTimePicker
-            value={entryDate}
-            mode="date"
-            display="default"
-            onChange={(event, selectedDate) =>
-              setEntryDate(selectedDate || entryDate)
-            }
-            style={styles.datePicker}
-          />
-          <View style={styles.entryContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Meal Name"
-              placeholderTextColor="#fff"
-              onChangeText={setMealName}
-              value={mealName}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Protein Amount"
-              placeholderTextColor="#fff"
-              onChangeText={(value) =>
-                /^\d*$/.test(value) ? setProteinAmount(value) : null
-              }
-              value={proteinAmount}
-              keyboardType="numeric"
-            />
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                handleAddEntry();
-                Keyboard.dismiss();
+      <View style={styles.content}>
+        {isAdding ? (
+          <View style={styles.addEntryForm}>
+            <View style={styles.datePickerContainer}>
+              <DateTimePicker
+                value={entryDate}
+                mode="date"
+                display="default"
+                onChange={(event, selectedDate) =>
+                  setEntryDate(selectedDate || entryDate)
+                }
+                style={styles.datePicker}
+              />
+            </View>
+            <View style={styles.entryContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Meal Name"
+                placeholderTextColor="#fff"
+                onChangeText={setMealName}
+                value={mealName}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Protein Amount"
+                placeholderTextColor="#fff"
+                onChangeText={(value) =>
+                  /^\d*$/.test(value) ? setProteinAmount(value) : null
+                }
+                value={proteinAmount}
+                keyboardType="numeric"
+              />
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  handleAddEntry();
+                  Keyboard.dismiss();
+                }}
+              >
+                <Text style={styles.buttonText}>Add</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : (
+          <>
+            <Calendar
+              onDayPress={(day) => {
+                setSelectedDate(day.dateString);
+                onDateChange(day.dateString);
               }}
-            >
-              <Text style={styles.buttonText}>Add</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      ) : (
-        <>
-          <Calendar
-            onDayPress={(day) => {
-              setSelectedDate(day.dateString);
-              onDateChange(day.dateString);
-            }}
-            current={selectedDate}
-            markingType={"custom"}
-            theme={{
-              backgroundColor: "#454545",
-              calendarBackground: "#454545",
-              textSectionTitleColor: "#b6c1cd",
-              textSectionTitleDisabledColor: "#d9e1e8",
-              selectedDayBackgroundColor: "#00adf5",
-              selectedDayTextColor: "#ffffff",
-              todayTextColor: "#00adf5",
-              dayTextColor: "#d9e1e8",
-              textDisabledColor: "#d9e1e8",
-              dotColor: "#00adf5",
-              selectedDotColor: "#ffffff",
-              arrowColor: "#ffffff",
-              monthTextColor: "#ffffff",
-              indicatorColor: "#ffffff",
-              textDayFontWeight: "300",
-              textMonthFontWeight: "bold",
-              textDayHeaderFontWeight: "300",
-              textDayFontSize: 16,
-              textMonthFontSize: 16,
-              textDayHeaderFontSize: 16,
-            }}
-          />
-          <View style={styles.listAndSum}>
-            <FlatList
-              data={filteredEntries}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item }) => (
-                <View style={styles.entryItem}>
-                  <Text style={styles.entryContent}>
-                    {item.mealName} - {item.proteinAmount}g
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => handleDeleteEntry(item._id)}
-                    style={styles.deleteButton}
-                  >
-                    <FontAwesomeIcon icon={faTrash} size={20} color="#fff" />
-                  </TouchableOpacity>
-                </View>
-              )}
-              ListEmptyComponent={
-                <Text style={styles.noEntry}>No entries on this date.</Text>
-              }
-              style={styles.entriesList}
+              current={selectedDate}
+              markingType={"custom"}
+              theme={{
+                backgroundColor: "#454545",
+                calendarBackground: "#454545",
+                textSectionTitleColor: "#b6c1cd",
+                textSectionTitleDisabledColor: "#d9e1e8",
+                selectedDayBackgroundColor: "#00adf5",
+                selectedDayTextColor: "#ffffff",
+                todayTextColor: "#00adf5",
+                dayTextColor: "#d9e1e8",
+                textDisabledColor: "#d9e1e8",
+                dotColor: "#00adf5",
+                selectedDotColor: "#ffffff",
+                arrowColor: "#ffffff",
+                monthTextColor: "#ffffff",
+                indicatorColor: "#ffffff",
+                textDayFontWeight: "300",
+                textMonthFontWeight: "bold",
+                textDayHeaderFontWeight: "300",
+                textDayFontSize: 16,
+                textMonthFontSize: 16,
+                textDayHeaderFontSize: 16,
+              }}
             />
-            <Text style={styles.pastEntrySum}>{proteinSum}g</Text>
-          </View>
-        </>
-      )}
+            <View style={styles.listAndSum}>
+              <FlatList
+                data={filteredEntries}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                  <View style={styles.entryItem}>
+                    <Text style={styles.entryContent}>
+                      {item.mealName} - {item.proteinAmount}g
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => handleDeleteEntry(item._id)}
+                      style={styles.deleteButton}
+                    >
+                      <FontAwesomeIcon icon={faTrash} size={20} color="#fff" />
+                    </TouchableOpacity>
+                  </View>
+                )}
+                ListEmptyComponent={
+                  <Text style={styles.noEntry}>No entries on this date.</Text>
+                }
+                style={styles.entriesList}
+              />
+              <Text style={styles.pastEntrySum}>{proteinSum}g</Text>
+            </View>
+          </>
+        )}
+      </View>
     </View>
   );
 };
@@ -286,6 +290,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    position: "absolute",
+    top: 10,
+    left: 10,
+    right: 10,
+    zIndex: 1,
   },
   title: {
     color: "#fff",
@@ -301,6 +310,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontWeight: "bold",
+  },
+  content: {
+    marginTop: 20
   },
   listAndSum: {
     flexDirection: "row",
@@ -353,8 +365,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
   },
-  datePicker: {
+  datePickerContainer: {
+    backgroundColor: "#454545",
+    borderRadius: 20,
     marginBottom: 10,
+    padding: 10,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  datePicker: {
+    // flex: 1,
   },
   entryContainer: {
     flexDirection: "row",
