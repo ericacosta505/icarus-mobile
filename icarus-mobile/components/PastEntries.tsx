@@ -102,7 +102,6 @@ const PastEntries: React.FC<PastEntriesProps> = ({
       );
 
       if (response.ok) {
-        console.log("Entry deleted successfully.");
         onEntryDelete();
       } else {
         console.error("Failed to delete entry.");

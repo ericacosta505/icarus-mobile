@@ -50,7 +50,6 @@ const EntryList: React.FC<EntryListProps> = ({
       );
 
       if (response.ok) {
-        console.log("Entry deleted successfully.");
         onEntryDelete();
         handleEntryDelete();
       } else {

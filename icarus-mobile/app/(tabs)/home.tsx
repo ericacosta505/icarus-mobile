@@ -130,7 +130,6 @@ export default function Home() {
 
   const fetchTodaysEntries = async () => {
     let time = new Date().toLocaleString().replace(/,/g, "");
-    console.log(time);
 
     const token = await SecureStore.getItemAsync("token");
     try {

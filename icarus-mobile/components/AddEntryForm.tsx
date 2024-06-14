@@ -33,7 +33,6 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({ onEntryAdded }) => {
     const token = await SecureStore.getItemAsync("token");
 
     let time = new Date().toLocaleString().replace(/,/g, "");
-    console.log(time);
 
     try {
       const response = await fetch(

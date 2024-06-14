@@ -14,18 +14,10 @@ export default function Index() {
           track of your daily protein intake easily and effectively.
         </Text>
         <View style={styles.buttonContainer}>
-          <Link
-            style={styles.button}
-            onPress={() => console.log("Navigate to Login")}
-            href="/login"
-          >
+          <Link style={styles.button} href="/login">
             <Text style={styles.buttonText}>Login</Text>
           </Link>
-          <Link
-            style={styles.button}
-            onPress={() => console.log("Navigate to Signup")}
-            href="/signup"
-          >
+          <Link style={styles.button} href="/signup">
             <Text style={styles.buttonText}>Signup</Text>
           </Link>
         </View>
