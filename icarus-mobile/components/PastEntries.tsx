@@ -108,7 +108,7 @@ const PastEntries: React.FC<PastEntriesProps> = ({
   };
 
   const handleAddEntry = async () => {
-    if (!mealName || !proteinAmount) {
+    if (!mealName || !proteinAmount || !entryDate) {
       Alert.alert("Please fill in all fields.");
       return;
     }
@@ -117,7 +117,7 @@ const PastEntries: React.FC<PastEntriesProps> = ({
 
     try {
       const response = await fetch(
-        `https://icarus-backend.onrender.com/user/addEntry`,
+        `https://icarus-backend.onrender.com/user/addPastEntry`,
         {
           method: "POST",
           headers: {
@@ -127,7 +127,8 @@ const PastEntries: React.FC<PastEntriesProps> = ({
           body: JSON.stringify({
             mealName,
             proteinAmount: Number(proteinAmount),
-            time: formatDate(entryDate),
+            date: formatDate(entryDate),
+            time: entryDate.toISOString().split("T")[1].substring(0, 5),
           }),
         }
       );
@@ -136,7 +137,7 @@ const PastEntries: React.FC<PastEntriesProps> = ({
         setMealName("");
         setProteinAmount("");
         setIsAdding(false);
-        onEntryDelete(); // Refresh the entries list
+        onEntryDelete();
       } else {
         console.error("Failed to add entry");
       }
@@ -312,7 +313,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   content: {
-    marginTop: 20
+    marginTop: 20,
   },
   listAndSum: {
     flexDirection: "row",
@@ -372,7 +373,7 @@ const styles = StyleSheet.create({
     padding: 10,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   datePicker: {
     // flex: 1,
