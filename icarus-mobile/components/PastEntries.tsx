@@ -393,9 +393,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  datePicker: {
-    // flex: 1,
-  },
+  datePicker: {},
   entryContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
