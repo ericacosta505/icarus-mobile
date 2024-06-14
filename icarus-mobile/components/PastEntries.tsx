@@ -48,6 +48,9 @@ const PastEntries: React.FC<PastEntriesProps> = ({
   const [mealName, setMealName] = useState<string>("");
   const [proteinAmount, setProteinAmount] = useState<string>("");
   const [entryDate, setEntryDate] = useState<Date>(new Date());
+  const [markedDates, setMarkedDates] = useState<any>({
+    [formatDate(new Date())]: { selected: true, selectedColor: "#00adf5" },
+  });
 
   const sortedEntries = useMemo(
     () =>
@@ -146,6 +149,18 @@ const PastEntries: React.FC<PastEntriesProps> = ({
     }
   };
 
+  const handleDayPress = (day: any) => {
+    setSelectedDate(day.dateString);
+    onDateChange(day.dateString);
+    setMarkedDates({
+      [day.dateString]: {
+        selected: true,
+        selectedColor: "#ffffff",
+        selectedTextColor: "#454545",
+      },
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -212,11 +227,9 @@ const PastEntries: React.FC<PastEntriesProps> = ({
         ) : (
           <>
             <Calendar
-              onDayPress={(day) => {
-                setSelectedDate(day.dateString);
-                onDateChange(day.dateString);
-              }}
+              onDayPress={handleDayPress}
               current={selectedDate}
+              markedDates={markedDates}
               markingType={"custom"}
               theme={{
                 backgroundColor: "#454545",
