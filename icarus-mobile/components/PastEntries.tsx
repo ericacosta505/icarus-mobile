@@ -49,7 +49,11 @@ const PastEntries: React.FC<PastEntriesProps> = ({
   const [proteinAmount, setProteinAmount] = useState<string>("");
   const [entryDate, setEntryDate] = useState<Date>(new Date());
   const [markedDates, setMarkedDates] = useState<any>({
-    [formatDate(new Date())]: { selected: true, selectedColor: "#00adf5" },
+    [formatDate(new Date())]: {
+      selected: true,
+      selectedColor: "#ffffff",
+      selectedTextColor: "#454545",
+    },
   });
 
   const sortedEntries = useMemo(
@@ -188,7 +192,8 @@ const PastEntries: React.FC<PastEntriesProps> = ({
               <DateTimePicker
                 value={entryDate}
                 mode="date"
-                display="default"
+                display="spinner"
+                textColor="#fff"
                 onChange={(event, selectedDate) =>
                   setEntryDate(selectedDate || entryDate)
                 }
