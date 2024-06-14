@@ -10,7 +10,7 @@ export default function RootLayout() {
           headerTitle: "",
           headerTransparent: true,
           headerShown: false,
-          animation: "none",
+          animation: "ios",
           gestureEnabled: false,
         }}
       />
