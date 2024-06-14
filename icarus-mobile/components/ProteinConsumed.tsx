@@ -22,18 +22,20 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
   const goalValue = parseFloat(proteinGoalValue);
   const initialConsumedValue = parseFloat(proteinConsumed);
 
-  const animationValue = useRef(new Animated.Value(0)).current;
+  const animationValue = useRef(
+    new Animated.Value(initialConsumedValue)
+  ).current;
   const [chartData, setChartData] = useState<ChartData[]>([
     {
       name: "Protein Consumed",
-      protein: 0,
-      color: "#fff",
-      legendFontColor: "#fff",
+      protein: initialConsumedValue,
+      color: "#ffffff",
+      legendFontColor: "#ffffff",
       legendFontSize: 12,
     },
     {
       name: "Remaining Goal",
-      protein: goalValue,
+      protein: goalValue - initialConsumedValue,
       color: "rgba(0, 0, 0, 1)",
       legendFontColor: "#FFFFFF",
       legendFontSize: 12,
@@ -41,8 +43,6 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
   ]);
 
   useEffect(() => {
-    animationValue.setValue(0);
-
     Animated.timing(animationValue, {
       toValue: initialConsumedValue,
       duration: 1500,
@@ -52,13 +52,13 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
     const listenerId = animationValue.addListener(({ value }) => {
       const consumed = Math.min(value, goalValue);
       const remaining = Math.max(goalValue - value, 0);
-      
+
       setChartData([
         {
           name: "Protein Consumed",
           protein: consumed,
-          color: "#fff",
-          legendFontColor: "#fff",
+          color: "#ffffff",
+          legendFontColor: "#ffffff",
           legendFontSize: 12,
         },
         {
@@ -72,7 +72,7 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
     });
 
     return () => animationValue.removeListener(listenerId);
-  }, [initialConsumedValue, goalValue]);
+  }, [proteinConsumed, goalValue]);
 
   const chartConfig = {
     backgroundGradientFrom: "transparent",
@@ -87,8 +87,8 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
       <Text style={styles.containerTitle}>Protein Consumed</Text>
       {goalValue === 0 ? (
         <View style={styles.noEntriesContainer}>
-        <Text style={styles.noGoal}>No Goal Set</Text>
-      </View>
+          <Text style={styles.noGoal}>No Goal Set</Text>
+        </View>
       ) : (
         <PieChart
           data={chartData}
