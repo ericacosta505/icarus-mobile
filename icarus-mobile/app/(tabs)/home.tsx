@@ -105,7 +105,9 @@ export default function Home() {
     const token = await SecureStore.getItemAsync("token");
     try {
       const response = await fetch(
-        `https://icarus-backend.onrender.com/user/sumTodaysEntries?time=${encodeURIComponent(time)}`,
+        `https://icarus-backend.onrender.com/user/sumTodaysEntries?time=${encodeURIComponent(
+          time
+        )}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -128,13 +130,15 @@ export default function Home() {
 
   const fetchTodaysEntries = async () => {
     let time = new Date().toLocaleString().replace(/,/g, "");
-    console.log(time)
+    console.log(time);
 
     const token = await SecureStore.getItemAsync("token");
     try {
       setisEntryLoading(true);
       const response = await fetch(
-        `https://icarus-backend.onrender.com/user/getTodaysEntries?time=${encodeURIComponent(time)}`,
+        `https://icarus-backend.onrender.com/user/getTodaysEntries?time=${encodeURIComponent(
+          time
+        )}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -216,48 +220,52 @@ export default function Home() {
   };
 
   return (
-    <DismissKeyboard>
-      <SafeAreaView style={styles.container}>
-        <Header
-          toggleDropdown={toggleDropdown}
-          showDropdown={showDropdown}
-          logout={logout}
-          navigateToPreviousEntries={navigateToPreviousEntries}
-          navigateToHome={navigateToHome}
-          username={username}
-        />
-        <View style={styles.content}>
-          <View style={styles.doubleContainer}>
-            <ProteinGoal
-              proteinGoalValue={proteinGoal}
-              isLoading={isLoading}
-              onUpdate={updateProteinGoal}
+    <SafeAreaView style={styles.container}>
+      <DismissKeyboard>
+        <View>
+          <Header
+            toggleDropdown={toggleDropdown}
+            showDropdown={showDropdown}
+            logout={logout}
+            navigateToPreviousEntries={navigateToPreviousEntries}
+            navigateToHome={navigateToHome}
+            username={username}
+          />
+          <View style={styles.content}>
+            <View style={styles.doubleContainer}>
+              <ProteinGoal
+                proteinGoalValue={proteinGoal}
+                isLoading={isLoading}
+                onUpdate={updateProteinGoal}
+              />
+              <DateDisplay />
+            </View>
+            <AddEntryForm
+              onEntryAdded={() => {
+                fetchTodaysEntries();
+                fetchSumTodaysEntries();
+                fetchPastEntries();
+              }}
             />
-            <DateDisplay />
+            <ProteinConsumed
+              proteinGoalValue={proteinGoal}
+              proteinConsumed={proteinConsumed}
+            />
           </View>
-          <AddEntryForm
-            onEntryAdded={() => {
-              fetchTodaysEntries();
-              fetchSumTodaysEntries();
-              fetchPastEntries();
-            }}
-          />
-          <ProteinConsumed
-            proteinGoalValue={proteinGoal}
-            proteinConsumed={proteinConsumed}
-          />
-          <EntryList
-            todaysEntries={todaysEntries}
-            isEntryLoading={isEntryLoading}
-            onEntryDelete={() => {
-              fetchTodaysEntries();
-              fetchPastEntries();
-            }}
-            handleEntryDelete={handleEntryDelete}
-          />
         </View>
-      </SafeAreaView>
-    </DismissKeyboard>
+      </DismissKeyboard>
+      <View style={styles.entryListContainer}>
+        <EntryList
+          todaysEntries={todaysEntries}
+          isEntryLoading={isEntryLoading}
+          onEntryDelete={() => {
+            fetchTodaysEntries();
+            fetchPastEntries();
+          }}
+          handleEntryDelete={handleEntryDelete}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -275,5 +283,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     gap: 10,
+  },
+  entryListContainer: {
+    paddingLeft: 10,
   },
 });
