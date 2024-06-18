@@ -91,6 +91,7 @@ export default function Signup() {
                 placeholderTextColor="#ccc"
                 onChangeText={(value) => handleOnChange("email", value)}
                 autoCapitalize="none"
+                textContentType="oneTimeCode"
               />
             </View>
             <View style={styles.inputBlock}>
@@ -102,6 +103,7 @@ export default function Signup() {
                 placeholderTextColor="#ccc"
                 onChangeText={(value) => handleOnChange("username", value)}
                 autoCapitalize="none"
+                textContentType="oneTimeCode"
               />
             </View>
             <View style={styles.inputBlock}>
@@ -114,6 +116,7 @@ export default function Signup() {
                 secureTextEntry
                 onChangeText={(value) => handleOnChange("password", value)}
                 autoCapitalize="none"
+                textContentType="oneTimeCode"
               />
             </View>
             <View style={styles.buttonContainer}>

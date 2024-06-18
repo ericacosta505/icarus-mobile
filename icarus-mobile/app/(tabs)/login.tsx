@@ -94,6 +94,7 @@ export default function Login() {
                 placeholderTextColor="#ccc"
                 onChangeText={(value) => handleOnChange("email", value)}
                 autoCapitalize="none"
+                textContentType="oneTimeCode"
               />
             </View>
             <View style={styles.inputBlock}>
@@ -106,6 +107,7 @@ export default function Login() {
                 secureTextEntry
                 onChangeText={(value) => handleOnChange("password", value)}
                 autoCapitalize="none"
+                textContentType="oneTimeCode"
               />
             </View>
             <View style={styles.buttonContainer}>
