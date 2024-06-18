@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   sidebar: {
-    width: 250,
-    backgroundColor: "#444",
+    width: 200,
+    backgroundColor: "#454545",
     paddingTop: 80,
     paddingLeft: 15,
     paddingRight: 15,
