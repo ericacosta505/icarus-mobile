@@ -1,7 +1,9 @@
 import React from "react";
-import { Text, View, StyleSheet, StatusBar, Image } from "react-native";
+import { Text, View, StyleSheet, StatusBar, Image, Dimensions } from "react-native";
 import { Link } from "expo-router";
 import logov2 from "../assets/images/logov2-removebg-preview.png";
+
+const { width, height } = Dimensions.get("window");
 
 export default function Index() {
   return (
@@ -32,32 +34,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
-  },
   overlay: {
     flex: 1,
     backgroundColor: "#333",
     width: "100%",
-    height: "100%",
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: width * 0.05,
   },
   logo: {
-    width: 80,
-    height: 80,
+    width: width * 0.4, 
+    height: width * 0.4,
+    marginBottom: height * 0.01, 
   },
   introText: {
-    fontSize: 18,
+    fontSize: width * 0.05,
     color: "white",
     textAlign: "center",
-    marginHorizontal: 40,
-    marginBottom: 40,
+    marginHorizontal: width * 0.05,
+    marginBottom: height * 0.05,
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
@@ -65,19 +60,19 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 20,
+    gap: width * 0.05,
     width: "100%",
   },
   button: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingHorizontal: width * 0.05,
+    paddingVertical: height * 0.02,
     borderRadius: 20,
     borderColor: "white",
     borderWidth: 2,
   },
   buttonText: {
     color: "white",
-    fontSize: 18,
+    fontSize: width * 0.05,
     fontWeight: "600",
   },
 });
