@@ -10,9 +10,12 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Image,
+  Dimensions,
 } from "react-native";
 import { Link, useRouter } from "expo-router";
 import logov2 from "../../assets/images/logov2-removebg-preview.png";
+
+const { width, height } = Dimensions.get("window");
 
 interface SignupCredentials {
   email: string;
@@ -146,39 +149,40 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#333",
     width: "100%",
-    height: "100%",
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: width * 0.05,
   },
   logo: {
-    width: 80,
-    height: 80,
+    width: width * 0.4,
+    height: width * 0.4,
+    marginBottom: height * 0.01,
   },
   formContainer: {
-    width: "80%",
-    padding: 20,
+    width: "90%",
+    padding: width * 0.05, 
     borderRadius: 10,
     backgroundColor: "#454545",
   },
   header: {
-    fontSize: 24,
+    fontSize: width * 0.06,
     fontWeight: "bold",
     color: "white",
-    marginBottom: 20,
+    marginBottom: height * 0.02, 
     textAlign: "center",
   },
   inputBlock: {
-    marginBottom: 15,
+    marginBottom: height * 0.02, 
   },
   label: {
     color: "white",
-    fontSize: 16,
-    marginBottom: 5,
+    fontSize: width * 0.04,
+    marginBottom: height * 0.01, 
   },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
-    padding: 10,
+    padding: height * 0.015,
     borderRadius: 5,
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     color: "white",
@@ -186,28 +190,28 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 20,
+    gap: width * 0.05,
     width: "100%",
   },
   button: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingHorizontal: width * 0.05,
+    paddingVertical: height * 0.01, 
     borderRadius: 20,
     borderColor: "white",
     borderWidth: 2,
   },
   buttonText: {
     color: "white",
-    fontSize: 18,
+    fontSize: width * 0.05,
     fontWeight: "600",
   },
   signupLink: {
-    marginTop: 15,
+    marginTop: height * 0.02,
     alignItems: "center",
   },
   signupText: {
     color: "white",
-    fontSize: 16,
+    fontSize: width * 0.04,
     textDecorationLine: "underline",
   },
 });
