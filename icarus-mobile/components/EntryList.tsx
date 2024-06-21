@@ -6,11 +6,14 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
+  Dimensions,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import Loader from "./Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+
+const { width, height } = Dimensions.get("window");
 
 interface EntryListProps {
   todaysEntries: Array<{
@@ -63,7 +66,7 @@ const EntryList: React.FC<EntryListProps> = ({
   };
 
   return (
-    <View style={[styles.container]}>
+    <View style={styles.container}>
       <Text style={styles.title}>Today's Entries</Text>
       {isEntryLoading ? (
         <Loader />
@@ -97,11 +100,11 @@ const EntryList: React.FC<EntryListProps> = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#454545",
-    padding: 10,
+    padding: width * 0.02,
     borderRadius: 20,
-    width: 410,
-    height: 200,
-    marginTop: 10,
+    width: '100%',
+    height: height * 0.18,
+    marginTop: height * 0.01,
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -114,8 +117,8 @@ const styles = StyleSheet.create({
   title: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 20,
-    marginBottom: 10,
+    fontSize: width * 0.045,
+    marginBottom: height * 0.01,
   },
   noEntriesContainer: {
     flex: 1,
@@ -123,7 +126,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   noEntries: {
-    fontSize: 16,
+    fontSize: width * 0.04,
     color: "#fff",
   },
   entryItem: {
@@ -131,21 +134,22 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "#333",
-    padding: 10,
+    padding: height * 0.02,
+    height: height * 0.063,
     borderRadius: 10,
-    marginBottom: 5,
+    marginBottom: height * 0.005,
   },
   entryContent: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: width * 0.04,
   },
   deleteButton: {
-    padding: 10,
+    padding: height * 0.015,
     borderRadius: 10,
   },
   deleteButtonText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: width * 0.04,
     fontWeight: "bold",
   },
 });

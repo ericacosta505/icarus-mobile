@@ -1,5 +1,7 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get("window");
 
 export default function DateDisplay() {
   const currentDate = new Date(Date.now());
@@ -20,10 +22,10 @@ export default function DateDisplay() {
 
 const styles = StyleSheet.create({
   dateDisplayContainer: {
-    padding: 10,
+    padding: width * 0.02,
     backgroundColor: "#454545",
-    height: 200,
-    width: 200,
+    height: height * 0.214,
+    width: width * 0.47,
     borderRadius: 20,
     display: "flex",
     justifyContent: "center",
@@ -35,7 +37,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   dateText: {
-    fontSize: 60,
+    fontSize: width * 0.15,
     color: "#fff",
     fontWeight: "bold",
   },

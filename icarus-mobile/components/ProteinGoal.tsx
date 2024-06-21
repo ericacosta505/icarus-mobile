@@ -6,9 +6,12 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Dimensions,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import Loader from "./Loader";
+
+const { width, height } = Dimensions.get("window");
 
 interface ProteinGoalProps {
   proteinGoalValue: string;
@@ -117,10 +120,10 @@ const ProteinGoal: React.FC<ProteinGoalProps> = ({
 
 const styles = StyleSheet.create({
   proteinGoalContainer: {
-    padding: 10,
+    padding: width * 0.02,
     backgroundColor: "#454545",
-    height: 200,
-    width: 200,
+    height: height * 0.214,
+    width: width * 0.47,
     borderRadius: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
@@ -134,7 +137,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 20,
+    fontSize: width * 0.045,
     color: "#fff",
     fontWeight: "bold",
   },
@@ -142,25 +145,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: height * 0.025,
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: height * 0.025,
   },
   input: {
     borderWidth: 2,
     borderColor: "#ccc",
-    padding: 10,
-    marginRight: 10,
-    minWidth: 50,
+    padding: height * 0.01,
+    marginRight: width * 0.025,
+    minWidth: width * 0.1,
     color: "#fff",
     borderRadius: 20,
   },
   button: {
-    padding: 10,
+    padding: width * 0.025,
     backgroundColor: "#eee",
     alignItems: "center",
     borderRadius: 20,
@@ -171,7 +174,7 @@ const styles = StyleSheet.create({
   displayedAmount: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 60,
+    fontSize: width * 0.15,
   },
 });
 

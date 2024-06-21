@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Keyboard,
   TouchableWithoutFeedback,
+  Dimensions,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
@@ -14,6 +15,8 @@ import ProteinConsumed from "@/components/ProteinConsumed";
 import DateDisplay from "@/components/DateDisplay";
 import AddEntryForm from "@/components/AddEntryForm";
 import EntryList from "@/components/EntryList";
+
+const { width, height } = Dimensions.get("window");
 
 interface DismissKeyboardProps {
   children: ReactNode;
@@ -277,13 +280,16 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    paddingHorizontal: width * 0.02,
   },
   doubleContainer: {
     display: "flex",
     flexDirection: "row",
-    gap: 10,
+    gap: width * 0.02,
+    width: "100%",
+    justifyContent: "space-between",
   },
   entryListContainer: {
-    paddingLeft: 10,
+    paddingHorizontal: width * 0.02,
   },
 });

@@ -6,8 +6,11 @@ import {
   TouchableOpacity,
   Image,
   Modal,
+  Dimensions,
 } from "react-native";
 import logov2 from "../assets/images/logov2-removebg-preview.png";
+
+const { width, height } = Dimensions.get("window");
 
 interface HeaderProps {
   toggleDropdown: () => void;
@@ -87,17 +90,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 10,
+    padding: width * 0.025,
     backgroundColor: "#333",
     width: "100%",
     zIndex: 999,
+    height: height * 0.07,
   },
   menu: {
-    padding: 10,
+    padding: width * 0.025,
   },
   hamburger: {
     color: "#fff",
-    fontSize: 24,
+    fontSize: width * 0.06,
   },
   modalBackground: {
     flex: 1,
@@ -108,12 +112,12 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   sidebar: {
-    width: 200,
+    width: width * 0.5,
     backgroundColor: "#454545",
-    paddingTop: 80,
-    paddingLeft: 15,
-    paddingRight: 15,
-    paddingBottom: 15,
+    paddingTop: height * 0.075,
+    paddingLeft: width * 0.0375,
+    paddingRight: width * 0.0375,
+    paddingBottom: height * 0.01875,
     borderTopRightRadius: 8,
     borderBottomRightRadius: 8,
     shadowColor: "#000",
@@ -123,24 +127,24 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   button: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingVertical: height * 0.015,
+    paddingHorizontal: width * 0.0375,
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: width * 0.04,
   },
   logoutText: {
     color: "#fff",
   },
   logo: {
-    height: 50,
-    width: 50,
+    height: height * 0.0625,
+    width: height * 0.0625,
   },
   username: {
-    marginRight: 10,
+    marginRight: width * 0.025,
     color: "#fff",
-    fontSize: 16,
+    fontSize: width * 0.04,
   },
 });
 

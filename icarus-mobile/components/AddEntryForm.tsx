@@ -7,8 +7,11 @@ import {
   Text,
   TouchableOpacity,
   Keyboard,
+  Dimensions,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
+
+const { width, height } = Dimensions.get("window");
 
 interface AddEntryFormProps {
   onEntryAdded: () => void;
@@ -98,14 +101,14 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({ onEntryAdded }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#454545",
-    width: 410,
-    height: 100,
+    width: '100%',
+    height: height * 0.105,
     borderRadius: 20,
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    padding: 10,
-    marginTop: 10,
+    padding: width * 0.02,
+    marginTop: height * 0.01,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -115,28 +118,29 @@ const styles = StyleSheet.create({
   containerTitle: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: width * 0.045,
   },
   entryContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: height * 0.01,
   },
   input: {
     flex: 1,
-    marginHorizontal: 5,
+    marginHorizontal: width * 0.01,
     borderWidth: 2,
     borderColor: "#fff",
     color: "#fff",
     borderRadius: 20,
-    padding: 10,
+    padding: height * 0.01,
   },
   button: {
-    padding: 10,
+    padding: height * 0.01,
     backgroundColor: "#eee",
     alignItems: "center",
     borderRadius: 20,
+    marginHorizontal: width * 0.01,
   },
   buttonText: {
     fontWeight: "bold",

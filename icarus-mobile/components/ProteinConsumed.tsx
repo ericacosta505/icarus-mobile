@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, Animated } from "react-native";
+import { View, Text, StyleSheet, Animated, Dimensions } from "react-native";
 import { PieChart } from "react-native-chart-kit";
+
+const { width, height } = Dimensions.get("window");
 
 interface ProteinConsumedProps {
   proteinGoalValue: string;
@@ -92,8 +94,8 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
       ) : (
         <PieChart
           data={chartData}
-          width={400}
-          height={220}
+          width={width * 0.90}
+          height={height * 0.26}
           chartConfig={chartConfig}
           accessor={"protein"}
           backgroundColor={"transparent"}
@@ -110,23 +112,22 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: 410,
-    height: 250,
+    width: '100%',
+    height: height * 0.31,
     borderRadius: 20,
-    marginTop: 10,
+    marginTop: height * 0.01,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 10,
-    paddingHorizontal: 10,
+    padding: width * 0.02,
   },
   containerTitle: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: width * 0.045,
     alignSelf: "flex-start",
-    marginTop: 10,
   },
   noEntriesContainer: {
     flex: 1,
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
   },
   noGoal: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: width * 0.04,
   },
 });
 
