@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, Dimensions } from "react-native";
 import { useState, useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
@@ -6,13 +6,14 @@ import Header from "@/components/Header";
 import PastEntries from "@/components/PastEntries";
 import ProteinConsumed from '@/components/ProteinConsumed'
 
+const { width, height } = Dimensions.get("window");
+
 interface Entry {
   _id: string;
   createdAt: string;
   mealName: string;
   proteinAmount: number;
 }
-
 
 export default function PreviousEntries() {
   const formatDate = (date: Date | string): string => {
@@ -87,8 +88,6 @@ export default function PreviousEntries() {
     };
     fetchProteinGoal();
   }, []);
-
-  
 
   const fetchPastEntries = async () => {
     const token = await SecureStore.getItemAsync("token");
