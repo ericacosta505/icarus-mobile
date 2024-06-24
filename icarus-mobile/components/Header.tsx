@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: width * 0.025,
     backgroundColor: "#333",
     width: "100%",
     zIndex: 999,
