@@ -94,7 +94,7 @@ const ProteinConsumed: React.FC<ProteinConsumedProps> = ({
       ) : (
         <PieChart
           data={chartData}
-          width={width * 0.90}
+          width={width * 0.9}
           height={height * 0.26}
           chartConfig={chartConfig}
           accessor={"protein"}
@@ -112,8 +112,8 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: '100%',
-    height: height * 0.31,
+    width: "100%",
+    height: height * 0.275,
     borderRadius: 20,
     marginTop: height * 0.01,
     shadowColor: "#000",
@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: width * 0.045,
     alignSelf: "flex-start",
+    marginTop: height * 0.035,
   },
   noEntriesContainer: {
     flex: 1,

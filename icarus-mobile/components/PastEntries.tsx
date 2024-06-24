@@ -8,12 +8,17 @@ import {
   TouchableOpacity,
   TextInput,
   Keyboard,
+  Dimensions,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as SecureStore from "expo-secure-store";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+
+const { width, height } = Dimensions.get("window");
+console.log("Screen height is ", height);
+console.log("Screen width is ", width);
 
 interface Entry {
   _id: string;
@@ -292,11 +297,10 @@ const PastEntries: React.FC<PastEntriesProps> = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#454545",
-    padding: 10,
+    padding: width * 0.02,
     borderRadius: 20,
-    width: 410,
-    height: 520,
-    marginTop: 10,
+    width: "100%",
+    height: height * 0.56,
     justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
@@ -309,85 +313,86 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     position: "absolute",
-    top: 10,
-    left: 10,
-    right: 10,
+    top: width * 0.015,
+    left: width * 0.015,
+    right: width * 0.015,
     zIndex: 1,
   },
   title: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 20,
-    marginBottom: 10,
+    fontSize: width * 0.047,
+    marginBottom: width * 0.015,
   },
   button: {
-    padding: 10,
+    padding: height * 0.01,
     backgroundColor: "#eee",
     alignItems: "center",
     borderRadius: 20,
+    marginHorizontal: width * 0.01,
   },
   buttonText: {
     fontWeight: "bold",
   },
   content: {
-    marginTop: 20,
+    marginTop: width * 0.047,
   },
   listAndSum: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 40,
+    gap: width * 0.09,
   },
   entriesList: {
-    height: 100,
-    marginTop: 10,
+    height: height * 0.107,
+    marginTop: width * 0.015,
   },
   entryItem: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#333",
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 5,
+    padding: width * 0.015,
+    borderRadius: 20,
+    marginBottom: width * 0.012,
     justifyContent: "space-between",
   },
   entryContent: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: width * 0.037,
   },
   deleteButton: {
-    padding: 10,
+    padding: width * 0.015,
     borderRadius: 10,
   },
   noEntry: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: width * 0.037,
     fontWeight: "bold",
-    marginTop: 40,
+    marginTop: width * 0.093,
   },
   pastEntrySum: {
-    marginTop: 10,
-    fontSize: 60,
+    marginTop: width * 0.015,
+    fontSize: width * 0.14,
     fontWeight: "bold",
     textAlign: "center",
     color: "#fff",
   },
   addEntryForm: {
-    marginTop: 20,
+    marginTop: width * 0.047,
   },
   input: {
     flex: 1,
-    marginHorizontal: 5,
+    marginHorizontal: width * 0.012,
     borderWidth: 2,
     borderColor: "#fff",
     color: "#fff",
     borderRadius: 20,
-    padding: 10,
+    padding: width * 0.015,
   },
   datePickerContainer: {
     backgroundColor: "#454545",
     borderRadius: 20,
-    marginBottom: 10,
-    padding: 10,
+    marginBottom: width * 0.023,
+    padding: width * 0.023,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -397,7 +402,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: width * 0.023,
   },
 });
 
