@@ -4,7 +4,7 @@ import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
 import Header from "@/components/Header";
 import PastEntries from "@/components/PastEntries";
-import ProteinConsumed from '@/components/ProteinConsumed'
+import ProteinConsumed from "@/components/ProteinConsumed";
 
 const { width, height } = Dimensions.get("window");
 
@@ -29,7 +29,9 @@ export default function PreviousEntries() {
   const [pastEntries, setPastEntries] = useState<Entry[]>([]);
   const [proteinGoal, setProteinGoal] = useState<string>("0");
   const [proteinConsumed, setProteinConsumed] = useState<string>("0");
-  const [selectedDate, setSelectedDate] = useState<string>(formatDate(new Date()));
+  const [selectedDate, setSelectedDate] = useState<string>(
+    formatDate(new Date())
+  );
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -123,11 +125,16 @@ export default function PreviousEntries() {
   }, [pastEntries]);
 
   useEffect(() => {
-    const selectedEntries = pastEntries.filter(entry => formatDate(new Date(entry.createdAt)) === selectedDate);
-    const totalProtein = selectedEntries.reduce((sum, entry) => sum + Number(entry.proteinAmount), 0);
+    const selectedEntries = pastEntries.filter(
+      (entry) => formatDate(new Date(entry.createdAt)) === selectedDate
+    );
+    const totalProtein = selectedEntries.reduce(
+      (sum, entry) => sum + Number(entry.proteinAmount),
+      0
+    );
     setProteinConsumed(totalProtein.toString());
-  }, [selectedDate, pastEntries]); 
-  
+  }, [selectedDate, pastEntries]);
+
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -155,26 +162,32 @@ export default function PreviousEntries() {
         navigateToHome={navigateToHome}
         username={username}
       />
-      <PastEntries pastEntries={pastEntries} onEntryDelete={()=>{
-        fetchPastEntries()
-      }} onDateChange={setSelectedDate}/>
-      <ProteinConsumed proteinGoalValue={proteinGoal} proteinConsumed={proteinConsumed} />
+      <View style={styles.content}>
+        <PastEntries
+          pastEntries={pastEntries}
+          onEntryDelete={() => {
+            fetchPastEntries();
+          }}
+          onDateChange={setSelectedDate}
+        />
+        <ProteinConsumed
+          proteinGoalValue={proteinGoal}
+          proteinConsumed={proteinConsumed}
+        />
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    flex: 1,
     backgroundColor: "#333",
   },
   content: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    paddingHorizontal: width * 0.02,
   },
 });
