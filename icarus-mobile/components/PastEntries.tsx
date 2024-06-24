@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
     gap: width * 0.09,
   },
   entriesList: {
-    height: height * 0.107,
+    height: height * 0.08,
     marginTop: width * 0.015,
   },
   entryItem: {
@@ -365,7 +365,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: width * 0.037,
     fontWeight: "bold",
-    marginTop: width * 0.093,
   },
   pastEntrySum: {
     marginTop: width * 0.015,
