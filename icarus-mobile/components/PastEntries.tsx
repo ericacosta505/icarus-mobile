@@ -17,8 +17,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const { width, height } = Dimensions.get("window");
-console.log("Screen height is ", height);
-console.log("Screen width is ", width);
 
 interface Entry {
   _id: string;
