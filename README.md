@@ -6,10 +6,6 @@ Icarus is designed to help you monitor your daily protein intake with ease and e
   <img src="/icarus-mobile/assets/images/homescreenshot.jpeg" width="300"/>
 </p>
 
-<p align="center">
-  <img src="/icarus-mobile/assets/images/pastscreenshot.jpeg" width="300"/>
-</p>
-
 ## Features
 
 **Add:** Enter new food items along with their protein content to keep track of your intake.
