@@ -2,9 +2,13 @@
 
 Icarus is designed to help you monitor your daily protein intake with ease and efficiency. By submitting entries of your meals, the application dynamically updates a chart, providing a visual representation of your protein consumption throughout the day.
 
-![home screenshot](/icarus-mobile/assets/images/homescreenshot.jpeg)
+<p align="center">
+  <img src="/icarus-mobile/assets/images/homescreenshot.jpeg" width="300"/>
+</p>
 
-![past screenshot](/icarus-mobile/assets/images/pastscreenshot.jpeg)
+<p align="center">
+  <img src="/icarus-mobile/assets/images/pastscreenshot.jpeg" width="300"/>
+</p>
 
 ## Features
 
