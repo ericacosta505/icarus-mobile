@@ -98,6 +98,7 @@ export default function Login() {
                 onChangeText={(value) => handleOnChange("email", value)}
                 autoCapitalize="none"
                 textContentType="oneTimeCode"
+                autoCorrect={false}
               />
             </View>
             <View style={styles.inputBlock}>
@@ -111,6 +112,7 @@ export default function Login() {
                 onChangeText={(value) => handleOnChange("password", value)}
                 autoCapitalize="none"
                 textContentType="oneTimeCode"
+                autoCorrect={false}
               />
             </View>
             <View style={styles.buttonContainer}>
@@ -145,21 +147,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: width * 0.05,
   },
   logo: {
-    width: width * 0.4, 
-    height: width * 0.4, 
-    marginBottom: height * 0.01, 
+    width: width * 0.4,
+    height: width * 0.4,
+    marginBottom: height * 0.01,
   },
   formContainer: {
     width: "90%",
-    padding: width * 0.05, 
+    padding: width * 0.05,
     borderRadius: 10,
     backgroundColor: "#454545",
   },
   header: {
-    fontSize: width * 0.06, 
+    fontSize: width * 0.06,
     fontWeight: "bold",
     color: "white",
-    marginBottom: height * 0.02, 
+    marginBottom: height * 0.02,
     textAlign: "center",
   },
   inputBlock: {
@@ -168,12 +170,12 @@ const styles = StyleSheet.create({
   label: {
     color: "white",
     fontSize: width * 0.04,
-    marginBottom: height * 0.01, 
+    marginBottom: height * 0.01,
   },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
-    padding: height * 0.015, 
+    padding: height * 0.015,
     borderRadius: 5,
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     color: "white",
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   button: {
-    paddingHorizontal: width * 0.05, 
+    paddingHorizontal: width * 0.05,
     paddingVertical: height * 0.01,
     borderRadius: 20,
     borderColor: "white",

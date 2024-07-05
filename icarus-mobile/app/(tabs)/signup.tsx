@@ -107,6 +107,7 @@ export default function Signup() {
                 onChangeText={(value) => handleOnChange("username", value)}
                 autoCapitalize="none"
                 textContentType="oneTimeCode"
+                autoCorrect={false}
               />
             </View>
             <View style={styles.inputBlock}>
@@ -120,6 +121,7 @@ export default function Signup() {
                 onChangeText={(value) => handleOnChange("password", value)}
                 autoCapitalize="none"
                 textContentType="oneTimeCode"
+                autoCorrect={false}
               />
             </View>
             <View style={styles.buttonContainer}>
@@ -160,7 +162,7 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: "90%",
-    padding: width * 0.05, 
+    padding: width * 0.05,
     borderRadius: 10,
     backgroundColor: "#454545",
   },
@@ -168,16 +170,16 @@ const styles = StyleSheet.create({
     fontSize: width * 0.06,
     fontWeight: "bold",
     color: "white",
-    marginBottom: height * 0.02, 
+    marginBottom: height * 0.02,
     textAlign: "center",
   },
   inputBlock: {
-    marginBottom: height * 0.02, 
+    marginBottom: height * 0.02,
   },
   label: {
     color: "white",
     fontSize: width * 0.04,
-    marginBottom: height * 0.01, 
+    marginBottom: height * 0.01,
   },
   input: {
     borderWidth: 1,
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
   },
   button: {
     paddingHorizontal: width * 0.05,
-    paddingVertical: height * 0.01, 
+    paddingVertical: height * 0.01,
     borderRadius: 20,
     borderColor: "white",
     borderWidth: 2,
