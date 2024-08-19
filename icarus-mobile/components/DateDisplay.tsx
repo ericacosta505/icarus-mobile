@@ -6,7 +6,7 @@ const { width, height } = Dimensions.get("window");
 export default function DateDisplay() {
   const currentDate = new Date(Date.now());
   const formattedMonth = currentDate.toLocaleDateString(undefined, {
-    month: "long",
+    month: "short",
   });
   const formattedDay = currentDate.toLocaleDateString(undefined, {
     day: "numeric",
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   dateDisplayContainer: {
     padding: width * 0.02,
     backgroundColor: "#454545",
-    height: height * 0.214,
+    height: height * 0.21,
     width: width * 0.47,
     borderRadius: 20,
     display: "flex",

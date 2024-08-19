@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   proteinGoalContainer: {
     padding: width * 0.02,
     backgroundColor: "#454545",
-    height: height * 0.214,
+    height: height * 0.21,
     width: width * 0.47,
     borderRadius: 20,
     shadowColor: "#000",
