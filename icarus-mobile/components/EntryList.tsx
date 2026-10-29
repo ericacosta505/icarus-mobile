@@ -67,7 +67,7 @@ const EntryList: React.FC<EntryListProps> = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Today's Entries</Text>
+      <Text style={styles.title}>Today&apos;s Entries</Text>
       {isEntryLoading ? (
         <Loader />
       ) : todaysEntries.length === 0 ? (

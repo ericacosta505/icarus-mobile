@@ -8,7 +8,7 @@ const { width, height } = Dimensions.get("window");
 export default function Index() {
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#000" />
+      <StatusBar barStyle="light-content" />
       <View style={styles.overlay}>
         <Image style={styles.logo} source={logov2}></Image>
         <Text style={styles.introText}>

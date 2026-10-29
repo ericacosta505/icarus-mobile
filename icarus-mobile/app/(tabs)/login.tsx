@@ -83,7 +83,7 @@ export default function Login() {
   return (
     <DismissKeyboard>
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#000" />
+        <StatusBar barStyle="light-content" />
         <View style={styles.overlay}>
           <Image style={styles.logo} source={logov2}></Image>
           <View style={styles.formContainer}>
@@ -122,7 +122,7 @@ export default function Login() {
             </View>
             <Link href="/signup" style={styles.signupLink}>
               <Text style={styles.signupText}>
-                Don't have an account? Sign up
+                Don&apos;t have an account? Sign up
               </Text>
             </Link>
           </View>

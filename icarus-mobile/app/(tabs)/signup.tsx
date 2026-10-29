@@ -80,7 +80,7 @@ export default function Signup() {
   return (
     <DismissKeyboard>
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#000" />
+        <StatusBar barStyle="light-content" />
         <View style={styles.overlay}>
           <Image style={styles.logo} source={logov2}></Image>
           <View style={styles.formContainer}>
