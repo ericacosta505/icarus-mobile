@@ -17,6 +17,7 @@ jobs:
           cache-dependency-path: icarus-mobile/package-lock.json
       - run: npm install --global npm@12.2.1
       - run: npm ci
+      - run: npm run test:security
       - run: npm run typecheck
       - run: npm run lint
       - run: npx expo install --check

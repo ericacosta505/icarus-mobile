@@ -23,11 +23,10 @@ All 20 Expo Doctor checks pass. iOS, Android and web JavaScript bundles export s
 
 CI runs on pull requests and pushes. Dependabot checks the package manifests and GitHub Actions weekly, grouping compatible minor/patch updates. Major updates remain separate for review.
 
-## Upstream advisories still open
+## Dependency security fixes
 
-The current Expo/Jest dependency tree still reports 14 affected package entries originating from two advisories:
+`@expo/cli` resolves Zod 4.6.7 through a scoped npm override. Regression tests exercise Expo's plugin descriptors, structured output, MCP registration/schema parameters, and oversized bounded arrays, maps, sets, and asynchronous arrays. Oversized collections with leading size constraints reject before element validation. This does not impose new limits on schemas that intentionally have no size constraint.
 
-- `deepmerge` 4.3.1: [prototype poisoning](https://github.com/advisories/GHSA-gcqx-w48m-w2h4). This is the newest published release and Expo/Jest require it.
-- Expo CLI's Zod 3: [memory exhaustion](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5). The patched Zod 4 release is outside Expo CLI's declared supported range.
+Expo and Jest resolve `deepmerge` through the local `vendor/deepmerge` security backport, anchored by the direct file dependency and npm override. The patch protects all three result-property writes while preserving the upstream API and MIT license. See the vendor README for provenance and removal instructions. The package is local code and therefore requires regression tests and review in addition to registry auditing.
 
-Do not use `npm audit fix --force`: its proposed remedy downgrades Expo to SDK 54. No incompatible transitive override or audit suppression is included. Recheck when Expo/Jest release compatible fixes.
+Run `npm run test:security` after dependency updates. CI runs these tests before TypeScript, lint and bundle exports. No advisory suppression or install-time patch script is used.
