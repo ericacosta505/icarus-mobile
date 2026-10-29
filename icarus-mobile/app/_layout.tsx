@@ -4,7 +4,7 @@ import { StatusBar } from "react-native";
 export default function RootLayout() {
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#000" />
+      <StatusBar barStyle="light-content" />
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen
@@ -13,7 +13,7 @@ export default function RootLayout() {
             headerTitle: "",
             headerTransparent: true,
             headerShown: false,
-            animation: "ios",
+            animation: "default",
             gestureEnabled: false,
           }}
         />

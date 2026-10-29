@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
 export default function DateDisplay() {
-  const currentDate = new Date(Date.now());
+  const [currentDate] = useState(() => new Date());
   const formattedMonth = currentDate.toLocaleDateString(undefined, {
     month: "short",
   });

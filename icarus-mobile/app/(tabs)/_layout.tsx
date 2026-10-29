@@ -7,7 +7,7 @@ export default function RootLayout() {
         name="login"
         options={{
           headerShown: false,
-          animation: "ios",
+          animation: "default",
           gestureEnabled: false,
         }}
       />
@@ -15,7 +15,7 @@ export default function RootLayout() {
         name="signup"
         options={{
           headerShown: false,
-          animation: "ios",
+          animation: "default",
           gestureEnabled: false,
         }}
       />
@@ -23,7 +23,7 @@ export default function RootLayout() {
         name="home"
         options={{
           headerShown: false,
-          animation: "ios",
+          animation: "default",
           gestureEnabled: false,
         }}
       />
@@ -31,7 +31,7 @@ export default function RootLayout() {
         name="previousentries"
         options={{
           headerShown: false,
-          animation: "ios",
+          animation: "default",
           gestureEnabled: false,
         }}
       />
