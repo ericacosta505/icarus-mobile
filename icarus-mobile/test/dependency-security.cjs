@@ -9,7 +9,10 @@ const cliRequire = createRequire(require.resolve('@expo/cli/package.json'));
 const cliRoot = path.dirname(require.resolve('@expo/cli/package.json'));
 const cliModule = (file) => require(path.join(cliRoot, 'build/src/start/server', file));
 const merge = expoConfigRequire('deepmerge');
-const { z } = cliRequire('zod');
+const { validate, ValidationError } = cliRequire('@expo/schema-utils');
+// CLI descriptors now use JSON Schema. MCP receives Zod from optional expo-mcp;
+// this direct devDependency is a test fixture, not evidence of CLI's resolution.
+const { z } = require('zod');
 const payload = () => JSON.parse('{"__proto__":{"injected":true}}');
 
 function assertSafe(value) {
@@ -68,8 +71,8 @@ test('normal merges preserve cloning, symbols, special objects and array hooks',
   assert.throws(() => merge.all({}), /first argument should be an array/);
 });
 
-test('Expo CLI resolves patched Zod 4', () => {
-  assert.equal(cliRequire('zod/package.json').version, '4.6.7');
+test('the MCP security regression fixture uses patched Zod 4', () => {
+  assert.equal(require('zod/package.json').version, '4.6.7');
 });
 
 for (const kind of ['array', 'set', 'map']) {
@@ -111,36 +114,99 @@ const plugin = {
   },
 };
 
-test('actual Expo plugin and output schemas preserve accepted and rejected inputs', () => {
-  const { PluginSchema, DevToolsPluginOutputSchema } = cliModule('DevToolsPlugin.schema.js');
-  assert.equal(PluginSchema.safeParse(plugin).success, true);
-  assert.equal(PluginSchema.safeParse({ ...plugin, packageName: '' }).success, false);
+test('actual Expo plugin JSON Schema and constructor validate descriptors', () => {
+  const { PluginSchema } = cliModule('devtools/DevToolsPlugin.schema.js');
+  const { DevToolsPlugin } = cliModule('devtools/DevToolsPlugin.js');
+  assert.doesNotThrow(() => validate(PluginSchema, plugin));
+  assert.equal(new DevToolsPlugin(plugin, '/project').packageName, plugin.packageName);
+
+  const command = plugin.cliExtensions.commands[0];
+  const invalidPlugins = [
+    { ...plugin, packageName: '' },
+    { ...plugin, packageRoot: undefined },
+    { ...plugin, cliExtensions: { ...plugin.cliExtensions, entryPoint: '' } },
+    { ...plugin, cliExtensions: { ...plugin.cliExtensions, commands: [] } },
+    ...[
+      { ...command, name: '' },
+      { ...command, environments: ['unknown'] },
+      { ...command, parameters: [{ name: 'count', type: 'unknown' }] },
+      { ...command, parameters: [{ type: 'number' }] },
+    ].map((invalidCommand) => ({
+      ...plugin, cliExtensions: { ...plugin.cliExtensions, commands: [invalidCommand] },
+    })),
+  ];
+  for (const invalid of invalidPlugins) {
+    assert.throws(() => validate(PluginSchema, invalid), ValidationError);
+    assert.throws(() => new DevToolsPlugin(invalid, '/project'), (error) => {
+      assert.match(error.message, /Invalid plugin configuration/);
+      assert.ok(error.cause instanceof ValidationError);
+      return true;
+    });
+  }
+});
+
+test('actual Expo output JSON Schema rejects malformed structured output', () => {
+  const { DevToolsPluginOutputSchema } = cliModule('devtools/DevToolsPlugin.schema.js');
+  const { DevToolsPluginCliExtensionResults } = cliModule('devtools/DevToolsPluginCliExtensionResults.js');
+  const results = new DevToolsPluginCliExtensionResults();
   const output = [{ type: 'text', text: 'ok', level: 'info' },
     { type: 'image', url: 'https://example.com/image.png' },
     { type: 'audio', url: 'https://example.com/audio.mp3' }];
-  assert.deepEqual(DevToolsPluginOutputSchema.parse(output), output);
-  assert.equal(DevToolsPluginOutputSchema.safeParse([{ type: 'audio', url: 'invalid' }]).success, false);
-  const { DevToolsPluginCliExtensionResults } = cliModule('DevToolsPluginCliExtensionResults.js');
-  const results = new DevToolsPluginCliExtensionResults();
+  assert.doesNotThrow(() => validate(DevToolsPluginOutputSchema, output));
   assert.deepEqual(results.parseOutputText(JSON.stringify(output)), output);
-  assert.equal(results.parseOutputText('[{}]')[0].level, 'error');
+  for (const invalid of [
+    [{}], [{ type: 'audio', url: 'invalid' }], [{ type: 'image', url: 'invalid' }],
+    [{ type: 'audio' }], [{ type: 'video', url: 'https://example.com/video.mp4' }],
+    [{ type: 'text', text: 'ok' }], [{ type: 'text', text: 'ok', level: 'debug' }],
+    [{ type: 'text', text: 1, level: 'info' }], {}, null,
+  ]) {
+    assert.throws(() => validate(DevToolsPluginOutputSchema, invalid), ValidationError);
+    const rejected = results.parseOutputText(JSON.stringify(invalid));
+    assert.equal(rejected.length, 1);
+    assert.equal(rejected[0].type, 'text');
+    assert.equal(rejected[0].level, 'error');
+    assert.match(rejected[0].text, /^Invalid JSON:/);
+  }
   assert.deepEqual(results.parseOutputText('plain output'), [{ type: 'text', text: 'plain output', level: 'info' }]);
+  assert.deepEqual(results.parseOutputText('first\n\nsecond', 'warning'), [
+    { type: 'text', text: 'first', level: 'warning' },
+    { type: 'text', text: 'second', level: 'warning' },
+  ]);
 });
 
-test('Expo MCP registration preserves strict schemas and typed command parameters', async () => {
-  const { addMcpCapabilities } = cliModule('MCPDevToolsPluginCLIExtensions.js');
-  let registered;
-  await addMcpCapabilities({ registerTool(name, config) { registered = { name, config }; } }, {
-    devtoolsPluginManager: { queryPluginsAsync: async () => [plugin] },
-  });
-  assert.equal(registered.name, plugin.packageName);
-  const schema = registered.config.inputSchema.parameters;
+test('Expo MCP registration keeps typed strict schemas and filters CLI-only commands', async () => {
+  const { addMcpCapabilities } = cliModule('mcp/MCPDevToolsPluginCLIExtensions.js');
+  const cliOnlyCommand = {
+    name: 'local-only', title: 'CLI only', environments: ['cli'],
+    parameters: [{ name: 'localPath', type: 'text' }],
+  };
+  const mixedPlugin = {
+    ...plugin, cliExtensions: {
+      ...plugin.cliExtensions, commands: [...plugin.cliExtensions.commands, cliOnlyCommand],
+    },
+  };
+  const cliOnlyPlugin = {
+    ...plugin, packageName: 'cli-only-plugin',
+    cliExtensions: { ...plugin.cliExtensions, commands: [cliOnlyCommand] },
+  };
+  const noCommandsPlugin = { packageName: 'no-commands', packageRoot: '/no-commands' };
+  const registered = [];
+  await addMcpCapabilities({ registerTool(name, config) { registered.push({ name, config }); } }, {
+    devtoolsPluginManager: { queryPluginsAsync: async () => [mixedPlugin, cliOnlyPlugin, noCommandsPlugin] },
+  }, z);
+  assert.deepEqual(registered.map(({ name }) => name), [plugin.packageName]);
+  const schema = registered[0].config.inputSchema.parameters;
   assert.equal(schema.safeParse({ command: 'inspect', count: 2, enabled: true, label: 'ok' }).success, true);
-  for (const input of [{ command: 'unknown' }, { command: 'inspect', count: '2' },
-    { command: 'inspect', enabled: 'true' }, { command: 'inspect', unexpected: 1 }]) {
+  assert.equal(schema.safeParse({ command: 'inspect' }).success, true);
+  for (const input of [{}, { command: 'unknown' }, { command: 'local-only' },
+    { command: 'inspect', count: '2' }, { command: 'inspect', enabled: 'true' },
+    { command: 'inspect', label: 2 }, { command: 'inspect', unexpected: 1 },
+    { command: 'inspect', localPath: '/private' }]) {
     assert.equal(schema.safeParse(input).success, false);
   }
   const jsonSchema = z.toJSONSchema(schema);
   assert.equal(jsonSchema.additionalProperties, false);
   assert.deepEqual(jsonSchema.properties.command.enum, ['inspect']);
+  assert.equal(jsonSchema.properties.localPath, undefined);
+  assert.deepEqual(mixedPlugin.cliExtensions.commands.map(({ name }) => name), ['inspect', 'local-only']);
 });
